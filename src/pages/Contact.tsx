@@ -150,4 +150,60 @@ const Contact = () => {
   );
 };
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const form = document.querySelector("form");
+
+  if (!form) return;
+
+  form.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const button = form.querySelector("button[type='submit']");
+    const originalText = button.textContent;
+
+    button.disabled = true;
+    button.textContent = "Sending...";
+
+    try {
+
+      const formData = new FormData(form);
+
+      const response = await fetch(
+        "https://dgec-contact-api.dgroupofficial.workers.dev/contact",
+        {
+          method: "POST",
+          body: formData
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to send message");
+      }
+
+      alert("Message sent successfully!");
+
+      form.reset();
+
+    } catch (error) {
+
+      alert(error.message || "Something went wrong");
+
+      console.error(error);
+
+    } finally {
+
+      button.disabled = false;
+      button.textContent = originalText;
+
+    }
+
+  });
+
+});
+</script>
 export default Contact;
