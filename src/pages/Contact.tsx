@@ -1,11 +1,12 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import SectionHeader from "@/components/SectionHeader";
 import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
+import { api } from "@/lib/api";
 
 const contactInfo = [
   { icon: MapPin, title: "Office Address", lines: ["Kalanki-14, Kathmandu, Nepal", "60m from Nepal National Hospital"] },
@@ -15,9 +16,34 @@ const contactInfo = [
 ];
 
 const Contact = () => {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [form, setForm] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+    subject: "",
+    message: "",
+    website: "",
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent! We'll get back to you within 24 hours.");
+    setIsLoading(true);
+
+    try {
+      const result = await api.postContact(form);
+
+      if (result.success) {
+        toast.success(result.message || "Message sent successfully.");
+        setForm({ fullName: "", phone: "", email: "", subject: "", message: "", website: "" });
+      } else {
+        toast.error(result.message || "Unable to send message right now.");
+      }
+    } catch {
+      toast.error("Network error while sending message.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -39,37 +65,45 @@ const Contact = () => {
       <section className="section-padding">
         <div className="container-custom">
           <div className="grid lg:grid-cols-5 gap-10">
-            {/* Form */}
             <div className="lg:col-span-3">
               <h2 className="font-display font-bold text-2xl mb-6">Send Us a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-5">
+                <input
+                  type="text"
+                  className="hidden"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={form.website}
+                  onChange={(event) => setForm((prev) => ({ ...prev, website: event.target.value }))}
+                />
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Full Name *</Label>
-                    <Input id="name" placeholder="Your name" required maxLength={100} className="mt-1" />
+                    <Input id="name" placeholder="Your name" required maxLength={100} className="mt-1" value={form.fullName} onChange={(e) => setForm((prev) => ({ ...prev, fullName: e.target.value }))} />
                   </div>
                   <div>
                     <Label htmlFor="phone">Phone Number *</Label>
-                    <Input id="phone" type="tel" placeholder="+977 98XXXXXXXX" required maxLength={20} className="mt-1" />
+                    <Input id="phone" type="tel" placeholder="+977 98XXXXXXXX" required maxLength={20} className="mt-1" value={form.phone} onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))} />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="email">Email *</Label>
-                  <Input id="email" type="email" placeholder="your@email.com" required maxLength={100} className="mt-1" />
+                  <Input id="email" type="email" placeholder="your@email.com" required maxLength={100} className="mt-1" value={form.email} onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))} />
                 </div>
                 <div>
                   <Label htmlFor="subject">Subject</Label>
-                  <Input id="subject" placeholder="How can we help?" maxLength={200} className="mt-1" />
+                  <Input id="subject" placeholder="How can we help?" maxLength={200} className="mt-1" value={form.subject} onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))} />
                 </div>
                 <div>
                   <Label htmlFor="message">Message *</Label>
-                  <Textarea id="message" placeholder="Tell us about your inquiry..." required maxLength={2000} rows={5} className="mt-1" />
+                  <Textarea id="message" placeholder="Tell us about your inquiry..." required maxLength={2000} rows={5} className="mt-1" value={form.message} onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))} />
                 </div>
-                <Button variant="accent" size="lg" type="submit" className="w-full md:w-auto">Send Message</Button>
+                <Button variant="accent" size="lg" type="submit" className="w-full md:w-auto" disabled={isLoading}>
+                  {isLoading ? "Sending..." : "Send Message"}
+                </Button>
               </form>
             </div>
 
-            {/* Contact Info */}
             <div className="lg:col-span-2 space-y-6">
               {contactInfo.map((c) => (
                 <div key={c.title} className="bg-card rounded-xl p-5 shadow-card">
@@ -85,7 +119,6 @@ const Contact = () => {
                 </div>
               ))}
 
-              {/* WhatsApp Quick */}
               <div className="bg-success/10 rounded-xl p-5">
                 <h3 className="font-display font-semibold mb-3 flex items-center gap-2">
                   <MessageCircle className="w-5 h-5 text-success" /> Quick WhatsApp
@@ -102,7 +135,6 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Map */}
           <div className="mt-12 bg-card rounded-xl shadow-card overflow-hidden">
             <div className="h-64 md:h-80 bg-secondary flex items-center justify-center">
               <div className="text-center">
