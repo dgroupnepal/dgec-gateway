@@ -219,3 +219,42 @@ The backend is modular under `api/_lib`, making it easy to add:
 - audit logs and admin user management
 
 DGEC brand tone remains professional, clean, and trust-oriented while backend logic is production-oriented and extensible.
+
+---
+
+## Cloudflare Worker + R2 + D1 (Document Admin)
+
+This repository now includes a Cloudflare Worker implementation for DGEC document uploads and admin document management:
+
+- Worker entry: `cloudflare-worker.ts`
+- D1 schema: `cloudflare/d1/schema.sql`
+
+### Endpoints provided by the worker
+
+- `POST /document-upload`
+  - Keeps multipart upload flow
+  - Uploads file to `DOCUMENTS_BUCKET` (R2)
+  - Persists metadata row to `DGEC_DB` (D1)
+  - Returns `{ success, message, key, recordId }`
+- `GET /admin/uploads`
+  - List uploads (newest first)
+  - Supports `search`, `status`, `limit`, `offset`
+- `GET /admin/uploads/:id`
+  - Fetch single upload details
+- `PATCH /admin/uploads/:id/status`
+  - Update status (`new|reviewing|approved|rejected|completed`)
+- `GET /admin/files/:key`
+  - Basic admin file retrieval by R2 object key
+
+### Required Cloudflare bindings
+
+- `DOCUMENTS_BUCKET` (R2)
+- `DGEC_DB` (D1)
+- Optional: `ALLOWED_ORIGINS`, `ADMIN_API_TOKEN`
+
+### D1 migration
+
+Run schema from:
+
+- `cloudflare/d1/schema.sql`
+
