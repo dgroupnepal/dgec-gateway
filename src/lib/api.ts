@@ -5,10 +5,10 @@ export type ApiResult<T = unknown> = {
   errors?: string[];
 };
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+const CONTACT_API_URL = "https://dgec-contact-api.dgroupofficial.workers.dev";
 
-const apiFetch = async <T>(path: string, init: RequestInit): Promise<ApiResult<T>> => {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+const apiFetch = async <T>(url: string, init: RequestInit): Promise<ApiResult<T>> => {
+  const response = await fetch(url, {
     ...init,
     headers: {
       ...(init.body instanceof FormData ? {} : { "Content-Type": "application/json" }),
@@ -22,11 +22,20 @@ const apiFetch = async <T>(path: string, init: RequestInit): Promise<ApiResult<T
 
 export const api = {
   postContact: (body: Record<string, unknown>) =>
-    apiFetch<{ id: string }>("/api/contact", { method: "POST", body: JSON.stringify(body) }),
+    apiFetch<{ id: string }>(`${CONTACT_API_URL}/contact`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
 
   postStudentInquiry: (body: Record<string, unknown>) =>
-    apiFetch<{ id: string }>("/api/student-inquiry", { method: "POST", body: JSON.stringify(body) }),
+    apiFetch<{ id: string }>(`${CONTACT_API_URL}/student-inquiry`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
 
   postDocumentUpload: (formData: FormData) =>
-    apiFetch<{ id: string }>("/api/document-upload", { method: "POST", body: formData }),
+    apiFetch<{ id: string }>(`${CONTACT_API_URL}/document-upload`, {
+      method: "POST",
+      body: formData,
+    }),
 };

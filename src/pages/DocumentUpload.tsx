@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import SectionHeader from "@/components/SectionHeader";
-import { Upload, Shield, FileText, Phone } from "lucide-react";
+import { Upload, Shield, FileText, Phone, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 
@@ -42,6 +42,27 @@ const DocumentUpload = () => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.dataTransfer.files) {
+      const newFiles = Array.from(e.dataTransfer.files);
+      const validFiles = newFiles.filter((f) => {
+        if (f.size > MAX_FILE_SIZE) {
+          toast.error(`${f.name} exceeds 10MB limit`);
+          return false;
+        }
+        return true;
+      });
+      setFiles((prev) => [...prev, ...validFiles]);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -72,7 +93,7 @@ const DocumentUpload = () => {
         toast.error(result.message || "Unable to upload documents right now.");
       }
     } catch {
-      toast.error("Network error while uploading files.");
+      toast.error("Upload service is being configured. Please contact DGEC by WhatsApp or email for urgent submissions.");
     } finally {
       setIsLoading(false);
     }
@@ -97,6 +118,16 @@ const DocumentUpload = () => {
       <section className="section-padding">
         <div className="container-custom max-w-3xl">
           <SectionHeader badge="Secure Upload" title="Student Document Submission" description="Upload required files for faster admission support." />
+
+          {/* Notice */}
+          <div className="flex items-start gap-3 bg-accent/10 rounded-xl p-4 mb-8">
+            <AlertTriangle className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-medium text-foreground">Upload backend is being configured.</p>
+              <p className="text-sm text-muted-foreground">If your submission fails, please contact DGEC by WhatsApp or email for urgent document submissions.</p>
+            </div>
+          </div>
+
           <div className="grid grid-cols-3 gap-4 mb-12">
             {[{ num: "1", text: "Fill the form & upload files" }, { num: "2", text: "Our team reviews your documents" }, { num: "3", text: "We contact you with next steps" }].map((s) => (
               <div key={s.num} className="text-center">
@@ -133,12 +164,17 @@ const DocumentUpload = () => {
 
             <div>
               <Label>Upload Documents</Label>
-              <div className="mt-1 border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-accent/50 transition-colors">
+              <div
+                className="mt-1 border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-accent/50 transition-colors cursor-pointer"
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                onClick={() => document.getElementById("fileUpload")?.click()}
+              >
                 <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground mb-2">Drag & drop files or click to browse</p>
+                <p className="text-sm text-muted-foreground mb-2">Drag & drop files here or click to browse</p>
                 <p className="text-xs text-muted-foreground mb-4">Accepted: PDF, JPG, JPEG, PNG, DOC, DOCX, ZIP (max 10MB each)</p>
                 <input type="file" multiple accept={ACCEPTED_TYPES.join(",")} onChange={handleFileChange} className="hidden" id="fileUpload" />
-                <Button type="button" variant="outline" size="sm" onClick={() => document.getElementById("fileUpload")?.click()}>
+                <Button type="button" variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); document.getElementById("fileUpload")?.click(); }}>
                   Choose Files
                 </Button>
               </div>
