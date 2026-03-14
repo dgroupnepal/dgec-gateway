@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { GraduationCap, Mail, Phone, MapPin } from "lucide-react";
+import { GraduationCap, Mail, Phone, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -17,6 +17,17 @@ const Footer = () => {
             <p className="text-primary-foreground/70 text-sm leading-relaxed mb-4">
               D Group Education Consultancy Pvt. Ltd. — Your trusted partner for study abroad counseling, Korea visa support, admissions, and travel services.
             </p>
+            <div className="flex items-center gap-3">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-primary-foreground/10 flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors" aria-label="Facebook">
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-primary-foreground/10 flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors" aria-label="Instagram">
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-primary-foreground/10 flex items-center justify-center hover:bg-accent hover:text-accent-foreground transition-colors" aria-label="YouTube">
+                <Youtube className="w-4 h-4" />
+              </a>
+            </div>
           </div>
 
           {/* Quick Links */}
@@ -30,6 +41,7 @@ const Footer = () => {
                 { label: "Study in Korea", path: "/study-in-korea" },
                 { label: "Contact", path: "/contact" },
                 { label: "FAQ", path: "/faq" },
+                { label: "Student Portal", path: "/portal" },
               ].map((link) => (
                 <li key={link.path}>
                   <Link to={link.path} className="hover:text-accent transition-colors">{link.label}</Link>
@@ -42,7 +54,7 @@ const Footer = () => {
           <div>
             <h4 className="font-display font-semibold text-base mb-4">Our Services</h4>
             <ul className="space-y-2 text-sm text-primary-foreground/70">
-              {["Education Counseling", "Korea Visa Support", "University Admissions", "Air Ticketing", "Hotel Reservation", "Travel Insurance"].map((s) => (
+              {["Education Counseling", "Korea Visa Support", "University Admissions", "Documentation Support", "Air Ticketing", "Hotel Reservation", "Travel Insurance"].map((s) => (
                 <li key={s}>
                   <Link to="/services" className="hover:text-accent transition-colors">{s}</Link>
                 </li>
@@ -58,11 +70,11 @@ const Footer = () => {
                 <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-accent" />
                 <span>Kalanki-14, Kathmandu, Nepal<br />60m from Nepal National Hospital</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 shrink-0 text-accent" />
+              <li className="flex items-start gap-2">
+                <Phone className="w-4 h-4 mt-0.5 shrink-0 text-accent" />
                 <div>
-                  <a href="tel:+977015133395" className="hover:text-accent transition-colors block">+977-015133395</a>
-                  <a href="tel:+977060405912" className="hover:text-accent transition-colors block">+977-060405912</a>
+                  <a href="tel:+977015927395" className="hover:text-accent transition-colors block">+977-015927395</a>
+                  <a href="tel:+82-010-7529-2059" className="hover:text-accent transition-colors block">+82-010-7529-2059 (Korea)</a>
                 </div>
               </li>
               <li className="flex items-center gap-2">
@@ -72,7 +84,7 @@ const Footer = () => {
             </ul>
             <div className="mt-4 text-sm text-primary-foreground/70">
               <p>WhatsApp (Nepal): <a href="https://wa.me/9779868780019" className="hover:text-accent transition-colors">+977 9868780019</a></p>
-              <p>WhatsApp/KakaoTalk (Korea): <a href="https://wa.me/821075292059" className="hover:text-accent transition-colors">+82 10-7529-2059</a></p>
+              <p>WhatsApp (Korea): <a href="https://wa.me/821075292059" className="hover:text-accent transition-colors">+82 10-7529-2059</a></p>
             </div>
           </div>
         </div>

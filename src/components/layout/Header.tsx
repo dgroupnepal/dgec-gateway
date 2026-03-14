@@ -53,7 +53,7 @@ const Header = () => {
         {/* Desktop CTA */}
         <div className="hidden lg:flex items-center gap-2">
           <Button variant="accent" size="sm" asChild>
-            <Link to="/contact">Apply Now</Link>
+            <Link to="/student-inquiry">Apply Now</Link>
           </Button>
           <Button variant="whatsapp" size="sm" asChild>
             <a href="https://wa.me/9779868780019" target="_blank" rel="noopener noreferrer">
@@ -92,7 +92,7 @@ const Header = () => {
             ))}
             <div className="flex gap-2 mt-4 pt-4 border-t border-border">
               <Button variant="accent" size="sm" className="flex-1" asChild>
-                <Link to="/contact" onClick={() => setMobileOpen(false)}>Apply Now</Link>
+                <Link to="/student-inquiry" onClick={() => setMobileOpen(false)}>Apply Now</Link>
               </Button>
               <Button variant="whatsapp" size="sm" className="flex-1" asChild>
                 <a href="https://wa.me/9779868780019" target="_blank" rel="noopener noreferrer">WhatsApp</a>

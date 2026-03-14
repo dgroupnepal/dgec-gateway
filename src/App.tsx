@@ -15,6 +15,8 @@ import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import StudentPortal from "./pages/StudentPortal";
 import StudentInquiry from "./pages/StudentInquiry";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsConditions from "./pages/TermsConditions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +40,8 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/student-inquiry" element={<StudentInquiry />} />
             <Route path="/portal" element={<StudentPortal />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsConditions />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
