@@ -13,6 +13,9 @@ export const submissionsRepo = {
   async createUploadedFiles(payload: Record<string, unknown>[]) {
     return supabase.from("uploaded_files").insert(payload).select("id, file_name, file_path");
   },
+  async createDocumentSubmission(payload: Record<string, unknown>) {
+    return supabase.from("document_submissions").insert(payload).select("id, created_at").single();
+  },
 };
 
 export const adminRepo = {
