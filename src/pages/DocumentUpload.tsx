@@ -4,38 +4,78 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import SectionHeader from "@/components/SectionHeader";
 import { Upload, Shield, FileText, Phone } from "lucide-react";
 import { toast } from "sonner";
+import { api } from "@/lib/api";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ACCEPTED_TYPES = [".pdf", ".jpg", ".jpeg", ".png", ".doc", ".docx", ".zip"];
 
 const DocumentUpload = () => {
   const [files, setFiles] = useState<File[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [form, setForm] = useState({
+    studentFullName: "",
+    phone: "",
+    email: "",
+    passportNumber: "",
+    message: "",
+    website: "",
+  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
-      const validFiles = newFiles.filter(f => {
+      const validFiles = newFiles.filter((f) => {
         if (f.size > MAX_FILE_SIZE) {
           toast.error(`${f.name} exceeds 10MB limit`);
           return false;
         }
         return true;
       });
-      setFiles(prev => [...prev, ...validFiles]);
+      setFiles((prev) => [...prev, ...validFiles]);
     }
   };
 
   const removeFile = (index: number) => {
-    setFiles(prev => prev.filter((_, i) => i !== index));
+    setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Documents submitted successfully! Our team will review them shortly.");
+
+    if (files.length === 0) {
+      toast.error("Please upload at least one document.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const payload = new FormData();
+      payload.append("studentFullName", form.studentFullName);
+      payload.append("phone", form.phone);
+      payload.append("email", form.email);
+      payload.append("passportNumber", form.passportNumber);
+      payload.append("message", form.message);
+      payload.append("website", form.website);
+      files.forEach((file) => payload.append("files", file));
+
+      const result = await api.postDocumentUpload(payload);
+
+      if (result.success) {
+        toast.success(result.message || "Documents submitted successfully.");
+        setFiles([]);
+        setForm({ studentFullName: "", phone: "", email: "", passportNumber: "", message: "", website: "" });
+      } else {
+        toast.error(result.message || "Unable to upload documents right now.");
+      }
+    } catch {
+      toast.error("Network error while uploading files.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -56,13 +96,9 @@ const DocumentUpload = () => {
 
       <section className="section-padding">
         <div className="container-custom max-w-3xl">
-          {/* Process */}
+          <SectionHeader badge="Secure Upload" title="Student Document Submission" description="Upload required files for faster admission support." />
           <div className="grid grid-cols-3 gap-4 mb-12">
-            {[
-              { num: "1", text: "Fill the form & upload files" },
-              { num: "2", text: "Our team reviews your documents" },
-              { num: "3", text: "We contact you with next steps" },
-            ].map((s) => (
+            {[{ num: "1", text: "Fill the form & upload files" }, { num: "2", text: "Our team reviews your documents" }, { num: "3", text: "We contact you with next steps" }].map((s) => (
               <div key={s.num} className="text-center">
                 <div className="w-10 h-10 rounded-full bg-accent text-accent-foreground font-display font-bold flex items-center justify-center mx-auto mb-2">{s.num}</div>
                 <p className="text-sm text-muted-foreground">{s.text}</p>
@@ -71,73 +107,37 @@ const DocumentUpload = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            <input type="text" className="hidden" tabIndex={-1} autoComplete="off" value={form.website} onChange={(e) => setForm((prev) => ({ ...prev, website: e.target.value }))} />
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="fullName">Full Name *</Label>
-                <Input id="fullName" placeholder="Your full name" required maxLength={100} className="mt-1" />
+                <Input id="fullName" placeholder="Your full name" required maxLength={100} className="mt-1" value={form.studentFullName} onChange={(e) => setForm((prev) => ({ ...prev, studentFullName: e.target.value }))} />
               </div>
               <div>
                 <Label htmlFor="phone">Phone Number *</Label>
-                <Input id="phone" type="tel" placeholder="+977 98XXXXXXXX" required maxLength={20} className="mt-1" />
+                <Input id="phone" type="tel" placeholder="+977 98XXXXXXXX" required maxLength={20} className="mt-1" value={form.phone} onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))} />
               </div>
             </div>
             <div>
               <Label htmlFor="email">Email Address *</Label>
-              <Input id="email" type="email" placeholder="your@email.com" required maxLength={100} className="mt-1" />
-            </div>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="country">Country of Interest</Label>
-                <Select>
-                  <SelectTrigger className="mt-1">
-                    <SelectValue placeholder="Select country" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="south-korea">South Korea</SelectItem>
-                    <SelectItem value="japan">Japan</SelectItem>
-                    <SelectItem value="australia">Australia</SelectItem>
-                    <SelectItem value="usa">USA</SelectItem>
-                    <SelectItem value="uk">UK</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="service">Service Required</Label>
-                <Select>
-                  <SelectTrigger className="mt-1">
-                    <SelectValue placeholder="Select service" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="admission">University Admission</SelectItem>
-                    <SelectItem value="visa">Visa Support</SelectItem>
-                    <SelectItem value="documentation">Documentation</SelectItem>
-                    <SelectItem value="travel">Travel Services</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Input id="email" type="email" placeholder="your@email.com" required maxLength={100} className="mt-1" value={form.email} onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))} />
             </div>
             <div>
-              <Label htmlFor="message">Message</Label>
-              <Textarea id="message" placeholder="Tell us about your requirements..." maxLength={1000} className="mt-1" rows={4} />
+              <Label htmlFor="passportNumber">Passport Number (Optional)</Label>
+              <Input id="passportNumber" placeholder="Passport number" className="mt-1" maxLength={50} value={form.passportNumber} onChange={(e) => setForm((prev) => ({ ...prev, passportNumber: e.target.value }))} />
+            </div>
+            <div>
+              <Label htmlFor="message">Message / Remarks</Label>
+              <Textarea id="message" placeholder="Tell us about your requirements..." maxLength={1000} className="mt-1" rows={4} value={form.message} onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))} />
             </div>
 
-            {/* File Upload */}
             <div>
               <Label>Upload Documents</Label>
               <div className="mt-1 border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-accent/50 transition-colors">
                 <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground mb-2">Drag & drop files or click to browse</p>
                 <p className="text-xs text-muted-foreground mb-4">Accepted: PDF, JPG, JPEG, PNG, DOC, DOCX, ZIP (max 10MB each)</p>
-                <input
-                  type="file"
-                  multiple
-                  accept={ACCEPTED_TYPES.join(",")}
-                  onChange={handleFileChange}
-                  className="hidden"
-                  id="fileUpload"
-                />
+                <input type="file" multiple accept={ACCEPTED_TYPES.join(",")} onChange={handleFileChange} className="hidden" id="fileUpload" />
                 <Button type="button" variant="outline" size="sm" onClick={() => document.getElementById("fileUpload")?.click()}>
                   Choose Files
                 </Button>
@@ -145,7 +145,7 @@ const DocumentUpload = () => {
               {files.length > 0 && (
                 <div className="mt-4 space-y-2">
                   {files.map((f, i) => (
-                    <div key={i} className="flex items-center justify-between bg-card rounded-lg p-3 shadow-card">
+                    <div key={`${f.name}-${i}`} className="flex items-center justify-between bg-card rounded-lg p-3 shadow-card">
                       <div className="flex items-center gap-2">
                         <FileText className="w-4 h-4 text-accent" />
                         <span className="text-sm truncate max-w-[200px]">{f.name}</span>
@@ -158,16 +158,16 @@ const DocumentUpload = () => {
               )}
             </div>
 
-            {/* Trust note */}
             <div className="flex items-start gap-3 bg-success/10 rounded-lg p-4">
               <Shield className="w-5 h-5 text-success shrink-0 mt-0.5" />
               <p className="text-sm text-foreground">Your documents are handled securely and reviewed only by our authorized team members.</p>
             </div>
 
-            <Button variant="accent" size="lg" type="submit" className="w-full">Submit Documents</Button>
+            <Button variant="accent" size="lg" type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Uploading..." : "Submit Documents"}
+            </Button>
           </form>
 
-          {/* Contact support */}
           <div className="mt-12 bg-card rounded-xl p-6 shadow-card text-center">
             <Phone className="w-8 h-8 text-accent mx-auto mb-3" />
             <h3 className="font-display font-semibold text-lg mb-2">Need Help?</h3>
