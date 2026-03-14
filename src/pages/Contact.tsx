@@ -6,7 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
-import { api } from "@/lib/api";
+
+const CONTACT_API_URL = import.meta.env.VITE_API_BASE_URL || "https://dgec-contact-api.dgroupofficial.workers.dev";
 
 const contactInfo = [
   { icon: MapPin, title: "Office Address", lines: ["Kalanki-14, Kathmandu, Nepal", "60m from Nepal National Hospital"] },
@@ -26,16 +27,29 @@ const Contact = () => {
     website: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
 
     try {
-      const result = await api.postContact(form);
+      const response = await fetch(`${CONTACT_API_URL}/contact`, {
+        method: "POST",
+        body: formData,
+      });
 
-      if (result.success) {
+      let result: { success?: boolean; message?: string } = {};
+      try {
+        result = (await response.json()) as { success?: boolean; message?: string };
+      } catch {
+        result = {};
+      }
+
+      if (response.ok && result.success) {
         toast.success(result.message || "Message sent successfully.");
         setForm({ fullName: "", phone: "", email: "", subject: "", message: "", website: "" });
+        formElement.reset();
       } else {
         toast.error(result.message || "Unable to send message right now.");
       }
@@ -67,9 +81,10 @@ const Contact = () => {
           <div className="grid lg:grid-cols-5 gap-10">
             <div className="lg:col-span-3">
               <h2 className="font-display font-bold text-2xl mb-6">Send Us a Message</h2>
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form id="contact-form" onSubmit={handleSubmit} className="space-y-5">
                 <input
                   type="text"
+                  name="website"
                   className="hidden"
                   tabIndex={-1}
                   autoComplete="off"
@@ -79,24 +94,24 @@ const Contact = () => {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Full Name *</Label>
-                    <Input id="name" placeholder="Your name" required maxLength={100} className="mt-1" value={form.fullName} onChange={(e) => setForm((prev) => ({ ...prev, fullName: e.target.value }))} />
+                    <Input id="name" name="fullName" placeholder="Your name" required maxLength={100} className="mt-1" value={form.fullName} onChange={(e) => setForm((prev) => ({ ...prev, fullName: e.target.value }))} />
                   </div>
                   <div>
                     <Label htmlFor="phone">Phone Number *</Label>
-                    <Input id="phone" type="tel" placeholder="+977 98XXXXXXXX" required maxLength={20} className="mt-1" value={form.phone} onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))} />
+                    <Input id="phone" name="phone" type="tel" placeholder="+977 98XXXXXXXX" required maxLength={20} className="mt-1" value={form.phone} onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))} />
                   </div>
                 </div>
                 <div>
                   <Label htmlFor="email">Email *</Label>
-                  <Input id="email" type="email" placeholder="your@email.com" required maxLength={100} className="mt-1" value={form.email} onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))} />
+                  <Input id="email" name="email" type="email" placeholder="your@email.com" required maxLength={100} className="mt-1" value={form.email} onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))} />
                 </div>
                 <div>
                   <Label htmlFor="subject">Subject</Label>
-                  <Input id="subject" placeholder="How can we help?" maxLength={200} className="mt-1" value={form.subject} onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))} />
+                  <Input id="subject" name="subject" placeholder="How can we help?" maxLength={200} className="mt-1" value={form.subject} onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))} />
                 </div>
                 <div>
                   <Label htmlFor="message">Message *</Label>
-                  <Textarea id="message" placeholder="Tell us about your inquiry..." required maxLength={2000} rows={5} className="mt-1" value={form.message} onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))} />
+                  <Textarea id="message" name="message" placeholder="Tell us about your inquiry..." required maxLength={2000} rows={5} className="mt-1" value={form.message} onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))} />
                 </div>
                 <Button variant="accent" size="lg" type="submit" className="w-full md:w-auto" disabled={isLoading}>
                   {isLoading ? "Sending..." : "Send Message"}
