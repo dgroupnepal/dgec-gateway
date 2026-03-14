@@ -18,6 +18,9 @@ import StudentInquiry from "./pages/StudentInquiry";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import NotFound from "./pages/NotFound";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUploads from "./pages/admin/AdminUploads";
+import AdminUploadDetails from "./pages/admin/AdminUploadDetails";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +45,9 @@ const App = () => (
             <Route path="/portal" element={<StudentPortal />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsConditions />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/uploads" element={<AdminUploads />} />
+            <Route path="/admin/uploads/:id" element={<AdminUploadDetails />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
