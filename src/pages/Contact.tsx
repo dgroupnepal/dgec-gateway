@@ -9,7 +9,7 @@ import { toast } from "sonner";
 
 const contactInfo = [
   { icon: MapPin, title: "Office Address", lines: ["Kalanki-14, Kathmandu, Nepal", "60m from Nepal National Hospital"] },
-  { icon: Phone, title: "Phone Numbers", lines: ["+977-015133395", "+977-060405912", "+82-010-7529-2059 (Korea)"] },
+  { icon: Phone, title: "Phone Numbers", lines: ["+977-015133395", "+977-015927395", "+977-060405912", "+82-010-7529-2059 (Korea)"] },
   { icon: Mail, title: "Email", lines: ["info@dgroup.edu.np"] },
   { icon: Clock, title: "Business Hours", lines: ["Sun–Fri: 10:00 AM – 5:00 PM", "Saturday: Closed"] },
 ];
