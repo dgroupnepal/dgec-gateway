@@ -6,13 +6,28 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
-import { api } from "@/lib/api";
 
 const contactInfo = [
-  { icon: MapPin, title: "Office Address", lines: ["Kalanki-14, Kathmandu, Nepal", "60m from Nepal National Hospital"] },
-  { icon: Phone, title: "Phone Numbers", lines: ["+977-015133395", "+977-015927395", "+977-060405912", "+82-010-7529-2059 (Korea)"] },
-  { icon: Mail, title: "Email", lines: ["info@dgroup.edu.np"] },
-  { icon: Clock, title: "Business Hours", lines: ["Sun–Fri: 10:00 AM – 5:00 PM", "Saturday: Closed"] },
+  {
+    icon: MapPin,
+    title: "Office Address",
+    lines: ["Kalanki-14, Kathmandu, Nepal", "60m from Nepal National Hospital"],
+  },
+  {
+    icon: Phone,
+    title: "Phone Numbers",
+    lines: ["+977-1-5927395",  "+82-010-7529-2059 (Korea)"],
+  },
+  {
+    icon: Mail,
+    title: "Email",
+    lines: ["info@dgroup.edu.np"],
+  },
+  {
+    icon: Clock,
+    title: "Business Hours",
+    lines: ["Sun–Fri: 10:00 AM – 5:00 PM", "Saturday: Closed"],
+  },
 ];
 
 const Contact = () => {
@@ -26,21 +41,50 @@ const Contact = () => {
     website: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const result = await api.postContact(form);
+      const formData = new FormData();
+      formData.append("fullName", form.fullName);
+      formData.append("phone", form.phone);
+      formData.append("email", form.email);
+      formData.append("subject", form.subject);
+      formData.append("message", form.message);
+      formData.append("website", form.website);
 
-      if (result.success) {
-        toast.success(result.message || "Message sent successfully.");
-        setForm({ fullName: "", phone: "", email: "", subject: "", message: "", website: "" });
-      } else {
-        toast.error(result.message || "Unable to send message right now.");
+      const response = await fetch(
+        "https://dgec-contact-api.dgroupofficial.workers.dev/contact",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      let result: any = null;
+
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error("Server returned invalid response");
       }
-    } catch {
-      toast.error("Network error while sending message.");
+
+      if (!response.ok || !result?.success) {
+        throw new Error(result?.message || "Unable to send message right now.");
+      }
+
+      toast.success(result.message || "Message sent successfully.");
+      setForm({
+        fullName: "",
+        phone: "",
+        email: "",
+        subject: "",
+        message: "",
+        website: "",
+      });
+    } catch (error: any) {
+      toast.error(error?.message || "Network error while sending message.");
     } finally {
       setIsLoading(false);
     }
@@ -50,13 +94,20 @@ const Contact = () => {
     <>
       <section className="bg-primary section-padding">
         <div className="container-custom">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-accent/20 text-accent font-medium text-sm mb-4">Contact Us</span>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-3xl"
+          >
+            <span className="inline-block px-4 py-1.5 rounded-full bg-accent/20 text-accent font-medium text-sm mb-4">
+              Contact Us
+            </span>
             <h1 className="font-display font-bold text-3xl md:text-5xl text-primary-foreground mb-6">
               Get in Touch with DGEC
             </h1>
             <p className="text-primary-foreground/70 text-lg">
-              Have questions? Ready to start your journey? We're here to help. Reach out via the form below or contact us directly.
+              Have questions? Ready to start your journey? We're here to help.
+              Reach out via the form below or contact us directly.
             </p>
           </motion.div>
         </div>
@@ -66,39 +117,114 @@ const Contact = () => {
         <div className="container-custom">
           <div className="grid lg:grid-cols-5 gap-10">
             <div className="lg:col-span-3">
-              <h2 className="font-display font-bold text-2xl mb-6">Send Us a Message</h2>
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <h2 className="font-display font-bold text-2xl mb-6">
+                Send Us a Message
+              </h2>
+
+              <form id="contact-form" onSubmit={handleSubmit} className="space-y-5">
                 <input
                   type="text"
+                  name="website"
                   className="hidden"
                   tabIndex={-1}
                   autoComplete="off"
                   value={form.website}
-                  onChange={(event) => setForm((prev) => ({ ...prev, website: event.target.value }))}
+                  onChange={(event) =>
+                    setForm((prev) => ({ ...prev, website: event.target.value }))
+                  }
                 />
+
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="name">Full Name *</Label>
-                    <Input id="name" placeholder="Your name" required maxLength={100} className="mt-1" value={form.fullName} onChange={(e) => setForm((prev) => ({ ...prev, fullName: e.target.value }))} />
+                    <Label htmlFor="fullName">Full Name *</Label>
+                    <Input
+                      id="fullName"
+                      name="fullName"
+                      placeholder="Your name"
+                      required
+                      maxLength={100}
+                      className="mt-1"
+                      value={form.fullName}
+                      onChange={(e) =>
+                        setForm((prev) => ({ ...prev, fullName: e.target.value }))
+                      }
+                    />
                   </div>
+
                   <div>
                     <Label htmlFor="phone">Phone Number *</Label>
-                    <Input id="phone" type="tel" placeholder="+977 98XXXXXXXX" required maxLength={20} className="mt-1" value={form.phone} onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))} />
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="+977 98XXXXXXXX"
+                      required
+                      maxLength={20}
+                      className="mt-1"
+                      value={form.phone}
+                      onChange={(e) =>
+                        setForm((prev) => ({ ...prev, phone: e.target.value }))
+                      }
+                    />
                   </div>
                 </div>
+
                 <div>
                   <Label htmlFor="email">Email *</Label>
-                  <Input id="email" type="email" placeholder="your@email.com" required maxLength={100} className="mt-1" value={form.email} onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))} />
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    required
+                    maxLength={100}
+                    className="mt-1"
+                    value={form.email}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, email: e.target.value }))
+                    }
+                  />
                 </div>
+
                 <div>
                   <Label htmlFor="subject">Subject</Label>
-                  <Input id="subject" placeholder="How can we help?" maxLength={200} className="mt-1" value={form.subject} onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))} />
+                  <Input
+                    id="subject"
+                    name="subject"
+                    placeholder="How can we help?"
+                    maxLength={200}
+                    className="mt-1"
+                    value={form.subject}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, subject: e.target.value }))
+                    }
+                  />
                 </div>
+
                 <div>
                   <Label htmlFor="message">Message *</Label>
-                  <Textarea id="message" placeholder="Tell us about your inquiry..." required maxLength={2000} rows={5} className="mt-1" value={form.message} onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))} />
+                  <Textarea
+                    id="message"
+                    name="message"
+                    placeholder="Tell us about your inquiry..."
+                    required
+                    maxLength={2000}
+                    rows={5}
+                    className="mt-1"
+                    value={form.message}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, message: e.target.value }))
+                    }
+                  />
                 </div>
-                <Button variant="accent" size="lg" type="submit" className="w-full md:w-auto" disabled={isLoading}>
+
+                <Button
+                  variant="accent"
+                  size="lg"
+                  type="submit"
+                  className="w-full md:w-auto"
+                  disabled={isLoading}
+                >
                   {isLoading ? "Sending..." : "Send Message"}
                 </Button>
               </form>
@@ -114,7 +240,9 @@ const Contact = () => {
                     <h3 className="font-display font-semibold">{c.title}</h3>
                   </div>
                   {c.lines.map((line, i) => (
-                    <p key={i} className="text-muted-foreground text-sm ml-[52px]">{line}</p>
+                    <p key={i} className="text-muted-foreground text-sm ml-[52px]">
+                      {line}
+                    </p>
                   ))}
                 </div>
               ))}
@@ -125,10 +253,22 @@ const Contact = () => {
                 </h3>
                 <div className="space-y-2">
                   <Button variant="whatsapp" size="sm" className="w-full" asChild>
-                    <a href="https://wa.me/9779868780019" target="_blank" rel="noopener noreferrer">Nepal: +977 9868780019</a>
+                    <a
+                      href="https://wa.me/9779868780019"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Nepal: +977 9868780019
+                    </a>
                   </Button>
                   <Button variant="whatsapp" size="sm" className="w-full" asChild>
-                    <a href="https://wa.me/821075292059" target="_blank" rel="noopener noreferrer">Korea: +82 10-7529-2059</a>
+                    <a
+                      href="https://wa.me/821075292059"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Korea: +82 10-7529-2059
+                    </a>
                   </Button>
                 </div>
               </div>
@@ -140,7 +280,9 @@ const Contact = () => {
               <div className="text-center">
                 <MapPin className="w-12 h-12 text-accent mx-auto mb-3" />
                 <p className="font-display font-semibold">DGEC Office</p>
-                <p className="text-muted-foreground text-sm">Kalanki-14, Kathmandu, Nepal</p>
+                <p className="text-muted-foreground text-sm">
+                  Kalanki-14, Kathmandu, Nepal
+                </p>
               </div>
             </div>
           </div>
@@ -150,60 +292,4 @@ const Contact = () => {
   );
 };
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  const form = document.querySelector("form");
-
-  if (!form) return;
-
-  form.addEventListener("submit", async function(e) {
-
-    e.preventDefault();
-
-    const button = form.querySelector("button[type='submit']");
-    const originalText = button.textContent;
-
-    button.disabled = true;
-    button.textContent = "Sending...";
-
-    try {
-
-      const formData = new FormData(form);
-
-      const response = await fetch(
-        "https://dgec-contact-api.dgroupofficial.workers.dev/contact",
-        {
-          method: "POST",
-          body: formData
-        }
-      );
-
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Failed to send message");
-      }
-
-      alert("Message sent successfully!");
-
-      form.reset();
-
-    } catch (error) {
-
-      alert(error.message || "Something went wrong");
-
-      console.error(error);
-
-    } finally {
-
-      button.disabled = false;
-      button.textContent = originalText;
-
-    }
-
-  });
-
-});
-</script>
 export default Contact;
