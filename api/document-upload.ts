@@ -113,6 +113,20 @@ export default async function handler(req: Request) {
 
     const references = (fileRows.data || []).map((row) => `${row.file_name} (${row.file_path})`).join("<br/>");
 
+    const documentSubmission = await submissionsRepo.createDocumentSubmission({
+      student_full_name: uploadPayload.student_full_name,
+      phone: uploadPayload.phone,
+      email: uploadPayload.email,
+      passport_number: uploadPayload.passport_number,
+      message: uploadPayload.message,
+      status: uploadPayload.status,
+      source: uploadPayload.source,
+      ip_address: uploadPayload.ip_address,
+      user_agent: uploadPayload.user_agent,
+    });
+
+    if (documentSubmission.error) throw new Error(JSON.stringify(documentSubmission.error));
+
     const adminEmail = await emailService.sendDocumentUploadNotification({
       studentFullName: uploadPayload.student_full_name,
       phone: uploadPayload.phone,
@@ -132,7 +146,13 @@ export default async function handler(req: Request) {
         message: emailFailed
           ? "Documents saved, but one or more emails failed to send."
           : "Documents uploaded successfully",
-        data: { id: created.data.id, createdAt: created.data.created_at, files: fileRows.data, emailStatus: { adminEmail, confirmationEmail } },
+        data: {
+          id: created.data.id,
+          recordId: documentSubmission.data.id,
+          createdAt: created.data.created_at,
+          files: fileRows.data,
+          emailStatus: { adminEmail, confirmationEmail },
+        },
       },
       origin,
     );
