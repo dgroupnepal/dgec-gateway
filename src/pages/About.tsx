@@ -1,7 +1,34 @@
 import { motion } from "framer-motion";
 import SectionHeader from "@/components/SectionHeader";
 import CTASection from "@/components/CTASection";
-import { Target, Eye, Heart, Award, Users, Globe } from "lucide-react";
+import { Target, Eye, Heart, Award, Users, Globe, MessageCircle } from "lucide-react";
+import teamDipesh from "/images/team-dipesh.jpg";
+import teamCounselor from "/images/team-counselor.jpg";
+import teamOperations from "/images/team-operations.jpg";
+
+const team = [
+  {
+    name: "Dipesh Bohara",
+    role: "Founder & CEO",
+    image: teamDipesh,
+    description: "Visionary leader of DGEC with expertise in student counseling and visa services.",
+    whatsapp: "https://wa.me/9779868780019",
+  },
+  {
+    name: "Education Counselor",
+    role: "Senior Student Counselor",
+    image: teamCounselor,
+    description: "Guides students for Korea, Japan, and international study programs.",
+    whatsapp: "https://wa.me/9779868780019",
+  },
+  {
+    name: "Operations Manager",
+    role: "Admin & Operations Manager",
+    image: teamOperations,
+    description: "Handles documentation, coordination, and daily operations.",
+    whatsapp: "https://wa.me/9779868780019",
+  },
+];
 
 const milestones = [
   { year: "2014", text: "DGEC founded in Kathmandu, Nepal" },
