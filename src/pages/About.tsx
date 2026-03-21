@@ -1,7 +1,34 @@
 import { motion } from "framer-motion";
 import SectionHeader from "@/components/SectionHeader";
 import CTASection from "@/components/CTASection";
-import { Target, Eye, Heart, Award, Users, Globe } from "lucide-react";
+import { Target, Eye, Heart, Award, Users, Globe, MessageCircle } from "lucide-react";
+import teamDipesh from "/images/team-dipesh.jpg";
+import teamCounselor from "/images/team-counselor.jpg";
+import teamOperations from "/images/team-operations.jpg";
+
+const team = [
+  {
+    name: "Dipesh Bohara",
+    role: "Founder & CEO",
+    image: teamDipesh,
+    description: "Visionary leader of DGEC with expertise in student counseling and visa services.",
+    whatsapp: "https://wa.me/9779868780019",
+  },
+  {
+    name: "Education Counselor",
+    role: "Senior Student Counselor",
+    image: teamCounselor,
+    description: "Guides students for Korea, Japan, and international study programs.",
+    whatsapp: "https://wa.me/9779868780019",
+  },
+  {
+    name: "Operations Manager",
+    role: "Admin & Operations Manager",
+    image: teamOperations,
+    description: "Handles documentation, coordination, and daily operations.",
+    whatsapp: "https://wa.me/9779868780019",
+  },
+];
 
 const milestones = [
   { year: "2014", text: "DGEC founded in Kathmandu, Nepal" },
@@ -90,6 +117,45 @@ const About = () => {
                   <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-accent" />
                   <p className="text-foreground">{m.text}</p>
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Our Team */}
+      <section className="section-padding bg-secondary">
+        <div className="container-custom">
+          <SectionHeader badge="Our Team" title="Meet the DGEC Team" description="Dedicated professionals committed to your success abroad." />
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {team.map((member, i) => (
+              <motion.div
+                key={member.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-background rounded-xl p-6 shadow-card text-center group"
+              >
+                <div className="relative w-32 h-32 mx-auto mb-4">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-32 h-32 rounded-full object-cover shadow-elevated transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <a
+                    href={member.whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute -bottom-1 -right-1 w-9 h-9 rounded-full bg-success flex items-center justify-center text-success-foreground shadow-md hover:scale-110 transition-transform"
+                    aria-label={`WhatsApp ${member.name}`}
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                  </a>
+                </div>
+                <h3 className="font-display font-semibold text-base">{member.name}</h3>
+                <p className="text-accent text-sm font-medium mb-2">{member.role}</p>
+                <p className="text-muted-foreground text-sm">{member.description}</p>
               </motion.div>
             ))}
           </div>
