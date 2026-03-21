@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { GraduationCap, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import SocialIcons from "@/components/SocialIcons";
 
 const Footer = () => {
@@ -10,9 +10,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-accent flex items-center justify-center">
-                <GraduationCap className="w-6 h-6 text-accent-foreground" />
-              </div>
+              <img src="/images/dgec-logo.png" alt="DGEC Logo" className="h-12 w-auto brightness-0 invert" />
               <span className="font-display font-bold text-xl">DGEC</span>
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed mb-4">
