@@ -275,14 +275,26 @@ const Contact = () => {
             </div>
           </div>
 
-          <div className="mt-12 bg-card rounded-xl shadow-card overflow-hidden">
-            <div className="h-64 md:h-80 bg-secondary flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="w-12 h-12 text-accent mx-auto mb-3" />
-                <p className="font-display font-semibold">DGEC Office</p>
-                <p className="text-muted-foreground text-sm">
-                  Kalanki-14, Kathmandu, Nepal
-                </p>
+          <div className="mt-12">
+            <h2 className="font-display font-bold text-2xl mb-6">Find Us on Map</h2>
+            <div className="bg-card rounded-xl shadow-card overflow-hidden">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.7481108693123!2d85.27938207532326!3d27.694179076190125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f824de877ec60ef%3A0xe2e57e0e03903119!2sD%20Group%20Education%20Consultancy%20Pvt.%20Ltd.!5e0!3m2!1sen!2skr!4v1774111293411!5m2!1sen!2skr"
+                width="100%"
+                height="400"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="DGEC Office Location"
+                className="w-full"
+              />
+              <div className="p-5 flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-accent shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-display font-semibold">DGEC Office</p>
+                  <p className="text-muted-foreground text-sm">Kalanki-14, Kathmandu, Nepal — 60m from Nepal National Hospital</p>
+                </div>
               </div>
             </div>
           </div>
