@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { GraduationCap, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import SocialIcons from "@/components/SocialIcons";
 
 const Footer = () => {

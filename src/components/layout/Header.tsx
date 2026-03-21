@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, GraduationCap, Upload } from "lucide-react";
+import { Menu, X, Phone, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialIcons from "@/components/SocialIcons";
 
@@ -38,9 +38,7 @@ const Header = () => {
         <div className="container-custom flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <GraduationCap className="w-6 h-6 text-primary-foreground" />
-            </div>
+            <img src="/images/dgec-logo.png" alt="DGEC Logo" className="h-12 md:h-14 w-auto" />
             <div>
               <span className="font-display font-bold text-lg leading-tight text-primary block">DGEC</span>
               <span className="text-[10px] text-muted-foreground leading-none hidden sm:block">D Group Education Consultancy</span>
