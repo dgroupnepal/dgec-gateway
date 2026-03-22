@@ -14,7 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      document_submissions: {
+        Row: {
+          created_at: string
+          email: string | null
+          file_key: string
+          file_size: number | null
+          file_type: string | null
+          full_name: string | null
+          id: string
+          message: string | null
+          original_file_name: string | null
+          passport_number: string | null
+          phone: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          file_key: string
+          file_size?: number | null
+          file_type?: string | null
+          full_name?: string | null
+          id?: string
+          message?: string | null
+          original_file_name?: string | null
+          passport_number?: string | null
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          file_key?: string
+          file_size?: number | null
+          file_type?: string | null
+          full_name?: string | null
+          id?: string
+          message?: string | null
+          original_file_name?: string | null
+          passport_number?: string | null
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
