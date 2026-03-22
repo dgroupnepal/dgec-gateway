@@ -11,62 +11,33 @@ export default async function handler(req: Request) {
   }
 
   if (req.method !== "POST") {
-    return new Response(
-      JSON.stringify({ success: false, message: "Method not allowed" }),
-      {
-        status: 405,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
-  }
-
-  try {
-    const body = await req.json();
-
-    const response = await fetch("https://dgec-contact-api.dgroupofficial.workers.dev/contact", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        formType: "student_inquiry",
-        fullName: body.fullName,
-        phone: body.phone,
-        email: body.email,
-        country: body.country,
-        education: body.currentEducation,
-        course: body.interestedCourse,
-        university: body.interestedUniversity,
-        intake: body.preferredIntake,
-        message: body.message,
-      }),
-    });
-
-    const data = await response.json();
-
-    return new Response(JSON.stringify(data), {
-      status: response.status,
+    return new Response(JSON.stringify({ success: false, message: "Method not allowed" }), {
+      status: 405,
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
     });
-  } catch (error) {
-    return new Response(
-      JSON.stringify({
-        success: false,
-        message: "Unable to process student inquiry",
-      }),
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
   }
+
+  const body = await req.json();
+
+  return fetch("https://dgec-contact-api.dgroupofficial.workers.dev/contact", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      formType: "student_inquiry",
+      fullName: body.fullName,
+      phone: body.phone,
+      email: body.email,
+      country: body.country,
+      education: body.currentEducation,
+      course: body.interestedCourse,
+      university: body.interestedUniversity,
+      intake: body.preferredIntake,
+      message: body.message,
+    }),
+  });
 }
