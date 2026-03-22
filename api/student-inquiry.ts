@@ -11,15 +11,18 @@ export default async function handler(req: Request) {
   }
 
   if (req.method !== "POST") {
-    return new Response(JSON.stringify({ success: false }), {
+    return new Response(JSON.stringify({ success: false, message: "Method not allowed" }), {
       status: 405,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
     });
   }
 
   const body = await req.json();
 
-  return fetch("https://dgec-contact-api.dgroupofficial.workers.dev/contact", {
+  const upstream = await fetch("https://dgec-contact-api.dgroupofficial.workers.dev/contact", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -36,5 +39,15 @@ export default async function handler(req: Request) {
       intake: body.preferredIntake,
       message: body.message,
     }),
+  });
+
+  const text = await upstream.text();
+
+  return new Response(text, {
+    status: upstream.status,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
   });
 }
