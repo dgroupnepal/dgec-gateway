@@ -31,6 +31,7 @@ const Footer = () => {
                 { label: "Study in Korea", path: "/study-in-korea" },
                 { label: "Contact", path: "/contact" },
                 { label: "FAQ", path: "/faq" },
+                { label: "Blog", path: "/blog" },
                 { label: "Student Portal", path: "/portal" },
               ].map((link) => (
                 <li key={link.path}>
