@@ -11,12 +11,9 @@ export default async function handler(req: Request) {
   }
 
   if (req.method !== "POST") {
-    return new Response(JSON.stringify({ success: false, message: "Method not allowed" }), {
+    return new Response(JSON.stringify({ success: false }), {
       status: 405,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
+      headers: { "Content-Type": "application/json" },
     });
   }
 
