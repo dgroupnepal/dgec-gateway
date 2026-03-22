@@ -12,12 +12,14 @@ import StudyInKorea from "./pages/StudyInKorea";
 import TravelServices from "./pages/TravelServices";
 import DocumentUpload from "./pages/DocumentUpload";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import StudentPortal from "./pages/StudentPortal";
 import StudentInquiry from "./pages/StudentInquiry";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
+import Disclaimer from "./pages/Disclaimer";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUploads from "./pages/admin/AdminUploads";
@@ -41,12 +43,14 @@ const App = () => (
             <Route path="/travel-services" element={<TravelServices />} />
             <Route path="/documents" element={<DocumentUpload />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/student-inquiry" element={<StudentInquiry />} />
             <Route path="/portal" element={<StudentPortal />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsConditions />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/uploads" element={<AdminUploads />} />
             <Route path="/admin/uploads/:id" element={<AdminUploadDetails />} />
