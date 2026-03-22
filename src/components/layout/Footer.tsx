@@ -31,6 +31,7 @@ const Footer = () => {
                 { label: "Study in Korea", path: "/study-in-korea" },
                 { label: "Contact", path: "/contact" },
                 { label: "FAQ", path: "/faq" },
+                { label: "Blog", path: "/blog" },
                 { label: "Student Portal", path: "/portal" },
               ].map((link) => (
                 <li key={link.path}>
@@ -106,6 +107,7 @@ const Footer = () => {
           <div className="flex gap-4">
             <Link to="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="hover:text-accent transition-colors">Terms & Conditions</Link>
+            <Link to="/disclaimer" className="hover:text-accent transition-colors">Disclaimer</Link>
           </div>
         </div>
       </div>
