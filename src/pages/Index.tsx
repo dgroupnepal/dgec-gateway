@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/SectionHeader";
@@ -64,10 +65,23 @@ const destinations = [
 const Index = () => {
   return (
     <>
+      <Helmet>
+        <title>Study Abroad from Nepal | Korea, UK, Australia, Japan & More | DGEC</title>
+        <meta name="description" content="D Group Education Consultancy Pvt. Ltd. helps students from Nepal study in South Korea, Japan, and other countries with affordable services, visa guidance, and expert support." />
+        <link rel="canonical" href="https://dgroupeducation.com/" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context":"https://schema.org","@type":"EducationalOrganization",
+          "name":"D Group Education Consultancy Pvt. Ltd.","alternateName":"DGEC",
+          "url":"https://dgroupeducation.com","email":"info@dgroup.edu.np",
+          "telephone":"+977-015927395",
+          "address":{"@type":"PostalAddress","streetAddress":"Kalanki-14, 60m from Nepal National Hospital","addressLocality":"Kathmandu","addressCountry":"NP"},
+          "sameAs":["https://wa.me/9779868780019"]
+        })}</script>
+      </Helmet>
       {/* Hero */}
       <section className="relative min-h-[600px] md:min-h-[700px] flex items-center">
         <div className="absolute inset-0">
-          <img src={heroBg} alt="Students walking on a modern university campus" className="w-full h-full object-cover" loading="eager" />
+          <img src={heroBg} alt="Nepali students studying abroad in South Korea" className="w-full h-full object-cover" loading="eager" />
           <div className="absolute inset-0 bg-primary/75" />
         </div>
         <div className="relative container-custom py-20 md:py-32">
@@ -78,10 +92,10 @@ const Index = () => {
             className="max-w-3xl"
           >
             <h1 className="font-display font-bold text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-tight mb-6">
-              Your Trusted Partner for Study Abroad, Korea Visa, Admission & Travel Services
+              Study in South Korea from Nepal — Visa, Admission & Study Abroad Experts
             </h1>
             <p className="text-primary-foreground/80 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
-              DGEC helps students from Nepal with university admissions, documentation, visa support, and complete travel preparation — all under one roof.
+              D Group Education Consultancy (DGEC) helps Nepali students with Korea student visa, university admissions, Japan visa, documentation, and complete travel support — all under one roof.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button variant="hero" asChild>
