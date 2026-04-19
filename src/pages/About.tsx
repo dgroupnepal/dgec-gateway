@@ -15,14 +15,14 @@ const team = [
     whatsapp: "https://wa.me/9779868780019",
   },
   {
-    name: "Education Counselor",
+    name: "Sachita Adhikari",
     role: "Senior Student Counselor",
     image: teamCounselor,
     description: "Guides students for Korea, Japan, and international study programs.",
     whatsapp: "https://wa.me/9779868780019",
   },
   {
-    name: "Operations Manager",
+    name: "Gomati Dhami",
     role: "Admin & Operations Manager",
     image: teamOperations,
     description: "Handles documentation, coordination, and daily operations.",
