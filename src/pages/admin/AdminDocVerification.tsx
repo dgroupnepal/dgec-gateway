@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import type { AppDocument } from "@/integrations/supabase/types";
@@ -30,7 +30,7 @@ const AdminDocVerification = () => {
   const [rejectReason, setRejectReason] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
     let q = supabase
       .from("documents")
@@ -49,9 +49,9 @@ const AdminDocVerification = () => {
     }
     setDocs(items);
     setLoading(false);
-  };
+  }, [filter, search]);
 
-  useEffect(() => { load(); }, [filter, search]);
+  useEffect(() => { load(); }, [load]);
 
   const updateStatus = async (doc: DocWithProfile, status: "approved" | "rejected") => {
     if (status === "rejected" && !rejectReason.trim()) {

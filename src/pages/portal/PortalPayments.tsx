@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CreditCard, CheckCircle2, Clock, AlertCircle, Download } from "lucide-react";
-import { supabase as sb } from "@/integrations/supabase/client";
 
 const statusConfig: Record<PaymentStatus, { label: string; className: string; icon: React.ElementType }> = {
   pending:   { label: "Pending",   className: "bg-yellow-100 text-yellow-800", icon: Clock },

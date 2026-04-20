@@ -12,12 +12,16 @@ const AuthCallback = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_IN" && session) {
         // Fetch profile to determine role
-        const { data: profile } = await supabase
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
           .select("role")
           .eq("id", session.user.id)
           .single();
 
+        if (profileError) {
+          setError("Failed to load your profile. Please try again.");
+          return;
+        }
         const role = profile?.role ?? "student";
         if (["admin", "super_admin", "staff"].includes(role)) {
           navigate("/admin", { replace: true });
@@ -31,7 +35,7 @@ const AuthCallback = () => {
 
     // Handle error in URL (e.g. user denied Google permission)
     const params = new URLSearchParams(window.location.search);
-    const hashParams = new URLSearchParams(window.location.hash.replace("#", "?").slice(1));
+    const hashParams = new URLSearchParams(window.location.hash.slice(1));
     const err = params.get("error_description") || hashParams.get("error_description");
     if (err) setError(err);
 

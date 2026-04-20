@@ -15,7 +15,7 @@ const AdminUploadDetails = () => {
 
   useEffect(() => {
     const load = async () => {
-      if (!id) return;
+      if (!id) { setLoading(false); return; }
       const result = await api.getAdminUploadById(id);
       if (result.success && result.data) {
         setUpload(result.data);
