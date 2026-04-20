@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, Upload } from "lucide-react";
+import { Menu, X, Phone, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialIcons from "@/components/SocialIcons";
 
@@ -10,7 +10,7 @@ const navItems = [
   { label: "Services", path: "/services" },
   { label: "Study in Korea", path: "/study-in-korea" },
   { label: "Travel Services", path: "/travel-services" },
-  { label: "Documents", path: "/documents" },
+  { label: "Student Portal", path: "/student-portal" },
   { label: "Blog", path: "/blog" },
   { label: "FAQ", path: "/faq" },
   { label: "Contact", path: "/contact" },
@@ -65,8 +65,8 @@ const Header = () => {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-2">
             <Button variant="outline" size="sm" asChild>
-              <Link to="/documents">
-                <Upload className="w-4 h-4 mr-1" /> Upload Docs
+              <Link to="/student-portal">
+                <User className="w-4 h-4 mr-1" /> Student Portal
               </Link>
             </Button>
             <Button variant="accent" size="sm" asChild>
@@ -113,7 +113,7 @@ const Header = () => {
                     <Link to="/student-inquiry" onClick={() => setMobileOpen(false)}>Apply Now</Link>
                   </Button>
                   <Button variant="outline" size="sm" className="flex-1" asChild>
-                    <Link to="/documents" onClick={() => setMobileOpen(false)}>Upload Docs</Link>
+                    <Link to="/student-portal" onClick={() => setMobileOpen(false)}>Student Portal</Link>
                   </Button>
                 </div>
                 <Button variant="whatsapp" size="sm" className="w-full" asChild>
