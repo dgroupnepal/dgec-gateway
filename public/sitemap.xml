@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://dgroupeducation.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://dgroupeducation.com/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://dgroupeducation.com/services</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://dgroupeducation.com/study-in-korea</loc><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://dgroupeducation.com/travel-services</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://dgroupeducation.com/documents</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://dgroupeducation.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://dgroupeducation.com/faq</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://dgroupeducation.com/contact</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://dgroupeducation.com/student-inquiry</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://dgroupeducation.com/privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://dgroupeducation.com/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://dgroupeducation.com/disclaimer</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://dgroupeducation.com/blog/korea-d4-1-visa-nepal-2026-guide</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://dgroupeducation.com/blog/top-universities-south-korea-nepali-students</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://dgroupeducation.com/blog/cost-of-studying-korea-nepali-students</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://dgroupeducation.com/blog/japan-visit-visa-process-nepal</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://dgroupeducation.com/blog/visa-rejection-reasons-how-to-avoid</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://dgroupeducation.com/blog/best-courses-korea-high-salary-jobs</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://dgroupeducation.com/blog/documents-required-korea-student-visa</loc><changefreq>monthly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://dgroupeducation.com/blog/life-in-korea-nepali-students</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://dgroupeducation.com/blog/dgec-helps-students-visa-faster</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://dgroupeducation.com/blog/travel-tips-first-time-international-students</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <!-- Core pages -->
+  <url><loc>https://dgroupeducation.com/</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://dgroupeducation.com/about</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dgroupeducation.com/services</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dgroupeducation.com/study-in-korea</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://dgroupeducation.com/travel-services</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://dgroupeducation.com/blog</loc><lastmod>2026-04-20</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://dgroupeducation.com/faq</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://dgroupeducation.com/contact</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dgroupeducation.com/student-inquiry</loc><lastmod>2026-04-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dgroupeducation.com/privacy</loc><lastmod>2026-04-20</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://dgroupeducation.com/terms</loc><lastmod>2026-04-20</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://dgroupeducation.com/disclaimer</loc><lastmod>2026-04-20</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <!-- Blog posts -->
+  <url><loc>https://dgroupeducation.com/blog/korea-d4-1-visa-nepal-2026-guide</loc><lastmod>2026-04-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://dgroupeducation.com/blog/top-universities-south-korea-nepali-students</loc><lastmod>2026-04-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://dgroupeducation.com/blog/cost-of-studying-korea-nepali-students</loc><lastmod>2026-04-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://dgroupeducation.com/blog/japan-visit-visa-process-nepal</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dgroupeducation.com/blog/visa-rejection-reasons-how-to-avoid</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dgroupeducation.com/blog/best-courses-korea-high-salary-jobs</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dgroupeducation.com/blog/documents-required-korea-student-visa</loc><lastmod>2026-04-01</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://dgroupeducation.com/blog/life-in-korea-nepali-students</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://dgroupeducation.com/blog/dgec-helps-students-visa-faster</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://dgroupeducation.com/blog/travel-tips-first-time-international-students</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

@@ -1,0 +1,10 @@
+name            = "dgroupnepal-redirect"
+main            = "index.ts"
+compatibility_date = "2024-11-01"
+
+# Routes: both bare domain and www → both HTTP and HTTPS are caught
+# Cloudflare handles the zone — add dgroupnepal.com to your CF account first
+routes = [
+  { pattern = "dgroupnepal.com/*",     zone_name = "dgroupnepal.com" },
+  { pattern = "www.dgroupnepal.com/*", zone_name = "dgroupnepal.com" },
+]
