@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, Upload } from "lucide-react";
+import { Menu, X, Phone, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialIcons from "@/components/SocialIcons";
 
@@ -10,7 +10,7 @@ const navItems = [
   { label: "Services", path: "/services" },
   { label: "Study in Korea", path: "/study-in-korea" },
   { label: "Travel Services", path: "/travel-services" },
-  { label: "Documents", path: "/documents" },
+  { label: "Student Portal", path: "/student-portal" },
   { label: "Blog", path: "/blog" },
   { label: "FAQ", path: "/faq" },
   { label: "Contact", path: "/contact" },
