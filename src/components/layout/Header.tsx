@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, User } from "lucide-react";
+import { Menu, X, Phone, LogIn, ChevronDown, GraduationCap, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialIcons from "@/components/SocialIcons";
 
@@ -10,19 +10,36 @@ const navItems = [
   { label: "Services", path: "/services" },
   { label: "Study in Korea", path: "/study-in-korea" },
   { label: "Travel Services", path: "/travel-services" },
-  { label: "Student Portal", path: "/student-portal" },
   { label: "Blog", path: "/blog" },
   { label: "FAQ", path: "/faq" },
   { label: "Contact", path: "/contact" },
 ];
 
+const loginItems = [
+  { label: "Student Portal", path: "/portal/login", icon: GraduationCap, desc: "Access your dashboard & documents" },
+  { label: "Admin / Staff Login", path: "/admin/login", icon: ShieldCheck, desc: "Staff and admin access" },
+];
+
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [mobileLoginOpen, setMobileLoginOpen] = useState(false);
+  const loginRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (loginRef.current && !loginRef.current.contains(e.target as Node)) {
+        setLoginOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <>
-      {/* Top bar with social icons & contact */}
+      {/* Top bar */}
       <div className="hidden lg:block bg-primary text-primary-foreground text-xs">
         <div className="container-custom flex items-center justify-between h-9">
           <div className="flex items-center gap-4">
@@ -64,11 +81,40 @@ const Header = () => {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-2">
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/student-portal">
-                <User className="w-4 h-4 mr-1" /> Student Portal
-              </Link>
-            </Button>
+            {/* Login dropdown */}
+            <div className="relative" ref={loginRef}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setLoginOpen((v) => !v)}
+                className="gap-1"
+              >
+                <LogIn className="w-4 h-4" />
+                Login
+                <ChevronDown className={`w-3 h-3 transition-transform ${loginOpen ? "rotate-180" : ""}`} />
+              </Button>
+              {loginOpen && (
+                <div className="absolute right-0 top-full mt-2 w-64 bg-background border border-border rounded-xl shadow-lg overflow-hidden z-50">
+                  {loginItems.map((item) => (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      onClick={() => setLoginOpen(false)}
+                      className="flex items-start gap-3 px-4 py-3 hover:bg-secondary/60 transition-colors group"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-accent/20 transition-colors">
+                        <item.icon className="w-4 h-4 text-accent" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{item.label}</p>
+                        <p className="text-xs text-muted-foreground">{item.desc}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <Button variant="accent" size="sm" asChild>
               <Link to="/student-inquiry">Apply Now</Link>
             </Button>
@@ -107,15 +153,37 @@ const Header = () => {
                   {item.label}
                 </Link>
               ))}
+
               <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-border">
-                <div className="flex gap-2">
-                  <Button variant="accent" size="sm" className="flex-1" asChild>
-                    <Link to="/student-inquiry" onClick={() => setMobileOpen(false)}>Apply Now</Link>
-                  </Button>
-                  <Button variant="outline" size="sm" className="flex-1" asChild>
-                    <Link to="/student-portal" onClick={() => setMobileOpen(false)}>Student Portal</Link>
-                  </Button>
-                </div>
+                {/* Mobile login accordion */}
+                <button
+                  className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium rounded-lg bg-secondary/40 hover:bg-secondary/70 transition-colors"
+                  onClick={() => setMobileLoginOpen((v) => !v)}
+                >
+                  <span className="flex items-center gap-2">
+                    <LogIn className="w-4 h-4" /> Login
+                  </span>
+                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileLoginOpen ? "rotate-180" : ""}`} />
+                </button>
+                {mobileLoginOpen && (
+                  <div className="flex flex-col gap-1 pl-2">
+                    {loginItems.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        onClick={() => { setMobileOpen(false); setMobileLoginOpen(false); }}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg hover:bg-secondary/50 transition-colors"
+                      >
+                        <item.icon className="w-4 h-4 text-accent shrink-0" />
+                        <span>{item.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
+                <Button variant="accent" size="sm" className="w-full" asChild>
+                  <Link to="/student-inquiry" onClick={() => setMobileOpen(false)}>Apply Now</Link>
+                </Button>
                 <Button variant="whatsapp" size="sm" className="w-full" asChild>
                   <a href="https://wa.me/9779868780019" target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
                 </Button>

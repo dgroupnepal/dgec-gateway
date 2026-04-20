@@ -53,6 +53,7 @@ const resolveOrigin = (request: Request, env: Env) => {
 
 const sanitizeText = (value: FormDataEntryValue | null) => {
   if (typeof value !== "string") return "";
+  // eslint-disable-next-line no-control-regex
   return value.trim().replace(/[\u0000-\u001F\u007F]/g, "");
 };
 

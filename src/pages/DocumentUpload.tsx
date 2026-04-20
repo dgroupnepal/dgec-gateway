@@ -123,8 +123,9 @@ const DocumentUpload = () => {
         message: "",
         website: "",
       });
-    } catch (error: any) {
-      toast.error(error?.message || "Network error while uploading documents.");
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "Network error while uploading documents.";
+      toast.error(msg);
     } finally {
       setIsLoading(false);
     }

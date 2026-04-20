@@ -62,7 +62,7 @@ const Contact = () => {
         }
       );
 
-      let result: any = null;
+      let result: { success?: boolean; message?: string } | null = null;
 
       try {
         result = await response.json();
@@ -83,8 +83,9 @@ const Contact = () => {
         message: "",
         website: "",
       });
-    } catch (error: any) {
-      toast.error(error?.message || "Network error while sending message.");
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : "Network error while sending message.";
+      toast.error(msg);
     } finally {
       setIsLoading(false);
     }
