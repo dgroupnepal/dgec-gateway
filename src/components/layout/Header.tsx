@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, Upload } from "lucide-react";
+import { Menu, X, Phone, Upload, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialIcons from "@/components/SocialIcons";
 
@@ -65,6 +65,11 @@ const Header = () => {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-2">
             <Button variant="outline" size="sm" asChild>
+              <Link to="/portal">
+                <LogIn className="w-4 h-4 mr-1" /> Student Portal
+              </Link>
+            </Button>
+            <Button variant="outline" size="sm" asChild>
               <Link to="/documents">
                 <Upload className="w-4 h-4 mr-1" /> Upload Docs
               </Link>
@@ -108,6 +113,11 @@ const Header = () => {
                 </Link>
               ))}
               <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-border">
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <Link to="/portal" onClick={() => setMobileOpen(false)}>
+                    <LogIn className="w-4 h-4 mr-1" /> Student Portal
+                  </Link>
+                </Button>
                 <div className="flex gap-2">
                   <Button variant="accent" size="sm" className="flex-1" asChild>
                     <Link to="/student-inquiry" onClick={() => setMobileOpen(false)}>Apply Now</Link>
