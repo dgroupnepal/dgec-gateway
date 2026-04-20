@@ -113,7 +113,7 @@ const Header = () => {
                     <Link to="/student-inquiry" onClick={() => setMobileOpen(false)}>Apply Now</Link>
                   </Button>
                   <Button variant="outline" size="sm" className="flex-1" asChild>
-                    <Link to="/documents" onClick={() => setMobileOpen(false)}>Upload Docs</Link>
+                    <Link to="/student-portal" onClick={() => setMobileOpen(false)}>Student Portal</Link>
                   </Button>
                 </div>
                 <Button variant="whatsapp" size="sm" className="w-full" asChild>
