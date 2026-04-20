@@ -162,7 +162,7 @@ const AdminMessages = () => {
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 <AnimatePresence initial={false}>
                   {messages.map((msg) => {
-                    const isStaff = (msg.profiles as any)?.role !== "student";
+                    const isStaff = (msg.profiles as { role?: string } | undefined)?.role !== "student";
                     const senderName = isStaff ? "DGEC Staff" : (active.profiles?.full_name ?? "Student");
                     return (
                       <motion.div key={msg.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}

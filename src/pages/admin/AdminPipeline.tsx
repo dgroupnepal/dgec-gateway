@@ -111,7 +111,7 @@ const AdminPipeline = () => {
 
                   <div className="flex-1 space-y-2 overflow-y-auto max-h-[calc(100vh-280px)]">
                     {cards.map((app) => {
-                      const student = app.profiles as any;
+                      const student = app.profiles as { full_name?: string; email?: string } | undefined;
                       const Icon = typeIcons[app.type] ?? FileText;
                       return (
                         <div
@@ -163,8 +163,8 @@ const AdminPipeline = () => {
             <div className="space-y-4 mt-4">
               <div>
                 <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mb-2">Student</p>
-                <p className="font-semibold">{(selected.profiles as any)?.full_name ?? "—"}</p>
-                <p className="text-sm text-muted-foreground">{(selected.profiles as any)?.email ?? "—"}</p>
+                <p className="font-semibold">{(selected.profiles as { full_name?: string } | undefined)?.full_name ?? "—"}</p>
+                <p className="text-sm text-muted-foreground">{(selected.profiles as { email?: string } | undefined)?.email ?? "—"}</p>
               </div>
 
               {[

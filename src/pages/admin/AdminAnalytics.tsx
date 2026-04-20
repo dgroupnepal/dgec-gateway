@@ -27,16 +27,19 @@ const AdminAnalytics = () => {
       ]);
 
       const studentCount = studentsRes.count ?? 0;
-      const apps = appsRes.data ?? [];
+      type AppRow = { status: string; type: string };
+      type PayRow = { amount_npr: number; status: string; created_at: string };
+
+      const apps = (appsRes.data ?? []) as AppRow[];
       const docCount = docsRes.count ?? 0;
       const threadCount = threadsRes.count ?? 0;
-      const payments = paymentsRes.data ?? [];
+      const payments = (paymentsRes.data ?? []) as PayRow[];
 
       const totalRevenue = payments
-        .filter((p: any) => p.status === "paid")
-        .reduce((sum: number, p: any) => sum + (p.amount_npr ?? 0), 0);
+        .filter((p) => p.status === "paid")
+        .reduce((sum, p) => sum + (p.amount_npr ?? 0), 0);
 
-      const completedApps = apps.filter((a: any) => a.status === "completed").length;
+      const completedApps = apps.filter((a) => a.status === "completed").length;
 
       setStats({
         totalStudents: studentCount,
@@ -49,12 +52,12 @@ const AdminAnalytics = () => {
 
       // Status breakdown
       const statusCounts: Record<string, number> = {};
-      apps.forEach((a: any) => { statusCounts[a.status] = (statusCounts[a.status] ?? 0) + 1; });
+      apps.forEach((a) => { statusCounts[a.status] = (statusCounts[a.status] ?? 0) + 1; });
       setAppsByStatus(Object.entries(statusCounts).map(([status, count]) => ({ status, count })));
 
       // Type breakdown
       const typeCounts: Record<string, number> = {};
-      apps.forEach((a: any) => { typeCounts[a.type] = (typeCounts[a.type] ?? 0) + 1; });
+      apps.forEach((a) => { typeCounts[a.type] = (typeCounts[a.type] ?? 0) + 1; });
       setAppsByType(Object.entries(typeCounts).map(([type, count]) => ({ type, count })));
 
       // Revenue by month (last 6 months)
@@ -65,8 +68,8 @@ const AdminAnalytics = () => {
         months[d.toLocaleString("default", { month: "short" })] = 0;
       }
       payments
-        .filter((p: any) => p.status === "paid")
-        .forEach((p: any) => {
+        .filter((p) => p.status === "paid")
+        .forEach((p) => {
           const month = new Date(p.created_at).toLocaleString("default", { month: "short" });
           if (month in months) months[month] += p.amount_npr ?? 0;
         });

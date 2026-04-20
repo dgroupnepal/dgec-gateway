@@ -189,7 +189,7 @@ const PortalMessages = () => {
                   <AnimatePresence initial={false}>
                     {messages.map((msg) => {
                       const isOwn = msg.sender_id === profile?.id;
-                      const senderName = (msg.profiles as any)?.full_name ?? "Staff";
+                      const senderName = (msg.profiles as { full_name?: string } | undefined)?.full_name ?? "Staff";
                       return (
                         <motion.div
                           key={msg.id}

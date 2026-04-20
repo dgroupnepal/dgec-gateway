@@ -37,7 +37,7 @@ const AdminPayments = () => {
 
   const load = async () => {
     setLoading(true);
-    let q = supabase
+    const q = supabase
       .from("payments")
       .select("*, profiles!student_id(full_name, email)")
       .order("created_at", { ascending: false });
@@ -85,7 +85,7 @@ const AdminPayments = () => {
       invoice_number: invoiceNumber,
       description: form.description,
       amount_npr: parseFloat(form.amount_npr),
-      currency: form.currency as any,
+      currency: form.currency as "NPR" | "USD" | "KRW" | "JPY",
       due_date: form.due_date || null,
       notes: form.notes || null,
       status: "pending",
