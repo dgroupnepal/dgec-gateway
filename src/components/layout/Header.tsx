@@ -65,8 +65,8 @@ const Header = () => {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-2">
             <Button variant="outline" size="sm" asChild>
-              <Link to="/documents">
-                <Upload className="w-4 h-4 mr-1" /> Upload Docs
+              <Link to="/student-portal">
+                <User className="w-4 h-4 mr-1" /> Student Portal
               </Link>
             </Button>
             <Button variant="accent" size="sm" asChild>
