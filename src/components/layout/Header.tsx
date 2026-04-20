@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, Upload, LogIn } from "lucide-react";
+import { Menu, X, Phone, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialIcons from "@/components/SocialIcons";
 
@@ -10,7 +10,6 @@ const navItems = [
   { label: "Services", path: "/services" },
   { label: "Study in Korea", path: "/study-in-korea" },
   { label: "Travel Services", path: "/travel-services" },
-  { label: "Documents", path: "/documents" },
   { label: "Blog", path: "/blog" },
   { label: "FAQ", path: "/faq" },
   { label: "Contact", path: "/contact" },
@@ -69,11 +68,6 @@ const Header = () => {
                 <LogIn className="w-4 h-4 mr-1" /> Student Portal
               </Link>
             </Button>
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/documents">
-                <Upload className="w-4 h-4 mr-1" /> Upload Docs
-              </Link>
-            </Button>
             <Button variant="accent" size="sm" asChild>
               <Link to="/student-inquiry">Apply Now</Link>
             </Button>
@@ -118,14 +112,9 @@ const Header = () => {
                     <LogIn className="w-4 h-4 mr-1" /> Student Portal
                   </Link>
                 </Button>
-                <div className="flex gap-2">
-                  <Button variant="accent" size="sm" className="flex-1" asChild>
-                    <Link to="/student-inquiry" onClick={() => setMobileOpen(false)}>Apply Now</Link>
-                  </Button>
-                  <Button variant="outline" size="sm" className="flex-1" asChild>
-                    <Link to="/documents" onClick={() => setMobileOpen(false)}>Upload Docs</Link>
-                  </Button>
-                </div>
+                <Button variant="accent" size="sm" className="w-full" asChild>
+                  <Link to="/student-inquiry" onClick={() => setMobileOpen(false)}>Apply Now</Link>
+                </Button>
                 <Button variant="whatsapp" size="sm" className="w-full" asChild>
                   <a href="https://wa.me/9779868780019" target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
                 </Button>
