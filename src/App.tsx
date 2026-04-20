@@ -24,6 +24,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import Disclaimer from "./pages/Disclaimer";
 import NotFound from "./pages/NotFound";
+import AuthCallback from "./pages/auth/AuthCallback";
 
 // Student Portal
 import PortalLogin from "./pages/portal/PortalLogin";
@@ -80,6 +81,9 @@ const App = () => (
             <Route path="/privacy"         element={<PL page={PrivacyPolicy} />} />
             <Route path="/terms"           element={<PL page={TermsConditions} />} />
             <Route path="/disclaimer"      element={<PL page={Disclaimer} />} />
+
+            {/* ── OAuth callback — must be outside protected routes ── */}
+            <Route path="/auth/callback" element={<AuthCallback />} />
 
             {/* ── Student Portal ── */}
             <Route path="/portal/login" element={<PortalLogin />} />
