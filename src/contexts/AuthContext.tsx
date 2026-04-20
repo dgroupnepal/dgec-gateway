@@ -48,11 +48,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       else setLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, s) => {
       setSession(s);
       setUser(s?.user ?? null);
-      if (s?.user) fetchProfile(s.user.id);
-      else setProfile(null);
+      if (s?.user) {
+        // Show spinner while loading profile after sign-in so role is ready before routing
+        if (event === "SIGNED_IN" || event === "USER_UPDATED") setLoading(true);
+        fetchProfile(s.user.id).finally(() => setLoading(false));
+      } else {
+        setProfile(null);
+        setLoading(false);
+      }
     });
 
     return () => subscription.unsubscribe();

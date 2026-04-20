@@ -104,8 +104,8 @@ const PortalMessages = () => {
   };
 
   return (
-    <div className="section-padding">
-      <div className="container-custom max-w-5xl">
+    <div>
+      <div className="max-w-5xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <h1 className="font-display text-2xl md:text-3xl font-bold">Messages</h1>
           <p className="text-muted-foreground mt-1">Chat directly with the DGEC team.</p>
