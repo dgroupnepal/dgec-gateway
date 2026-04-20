@@ -24,9 +24,11 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import Disclaimer from "./pages/Disclaimer";
 import NotFound from "./pages/NotFound";
+import AuthCallback from "./pages/auth/AuthCallback";
 
 // Student Portal
 import PortalLogin from "./pages/portal/PortalLogin";
+import StudentLayout from "./pages/portal/StudentLayout";
 import PortalDashboard from "./pages/portal/PortalDashboard";
 import PortalProfile from "./pages/portal/PortalProfile";
 import PortalDocuments from "./pages/portal/PortalDocuments";
@@ -55,13 +57,6 @@ const PL = ({ page: Page }: { page: React.ComponentType }) => (
   <Layout><Page /></Layout>
 );
 
-/** Portal page: auth-gated, inside main layout */
-const PortalPage = ({ page: Page }: { page: React.ComponentType }) => (
-  <ProtectedRoute>
-    <Layout><Page /></Layout>
-  </ProtectedRoute>
-);
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -87,14 +82,26 @@ const App = () => (
             <Route path="/terms"           element={<PL page={TermsConditions} />} />
             <Route path="/disclaimer"      element={<PL page={Disclaimer} />} />
 
+            {/* ── OAuth callback — must be outside protected routes ── */}
+            <Route path="/auth/callback" element={<AuthCallback />} />
+
             {/* ── Student Portal ── */}
-            <Route path="/portal"               element={<Navigate to="/portal/login" replace />} />
-            <Route path="/portal/login"         element={<PortalLogin />} />
-            <Route path="/portal/dashboard"     element={<PortalPage page={PortalDashboard} />} />
-            <Route path="/portal/profile"       element={<PortalPage page={PortalProfile} />} />
-            <Route path="/portal/documents"     element={<PortalPage page={PortalDocuments} />} />
-            <Route path="/portal/messages"      element={<PortalPage page={PortalMessages} />} />
-            <Route path="/portal/payments"      element={<PortalPage page={PortalPayments} />} />
+            <Route path="/portal/login" element={<PortalLogin />} />
+            <Route
+              path="/portal"
+              element={
+                <ProtectedRoute>
+                  <StudentLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index            element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<PortalDashboard />} />
+              <Route path="profile"   element={<PortalProfile />} />
+              <Route path="documents" element={<PortalDocuments />} />
+              <Route path="messages"  element={<PortalMessages />} />
+              <Route path="payments"  element={<PortalPayments />} />
+            </Route>
 
             {/* ── Admin Portal ── */}
             <Route path="/admin/login" element={<AdminLogin />} />

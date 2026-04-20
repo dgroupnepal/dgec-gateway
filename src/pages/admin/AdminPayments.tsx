@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Payment, PaymentStatus } from "@/integrations/supabase/types";
@@ -35,7 +35,7 @@ const AdminPayments = () => {
   });
   const [creating, setCreating] = useState(false);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
     const q = supabase
       .from("payments")
@@ -53,14 +53,14 @@ const AdminPayments = () => {
     }
     setPayments(items);
     setLoading(false);
-  };
+  }, [search]);
 
   const loadStudents = async () => {
     const { data } = await supabase.from("profiles").select("id, full_name, email").eq("role", "student");
     if (data) setStudents(data as typeof students);
   };
 
-  useEffect(() => { load(); }, [search]);
+  useEffect(() => { load(); }, [load]);
 
   const updatePaymentStatus = async (id: string, status: PaymentStatus) => {
     const { error } = await supabase.from("payments").update({

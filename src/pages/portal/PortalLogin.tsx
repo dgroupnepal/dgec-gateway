@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
@@ -14,26 +14,50 @@ const PortalLogin = () => {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [showPass, setShowPass] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { signInWithEmail, signUpWithEmail, signInWithGoogle } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const [loginPending, setLoginPending] = useState(false);
+
+  const {
+    signInWithEmail, signUpWithEmail, signInWithGoogle,
+    isAuthenticated, isStaff, loading: authLoading,
+  } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname ?? "/portal/dashboard";
+  const from =
+    (location.state as { from?: { pathname: string } })?.from?.pathname ??
+    "/portal/dashboard";
+
+  // Redirect already-authenticated users immediately
+  useEffect(() => {
+    if (!authLoading && isAuthenticated && !loginPending) {
+      navigate(isStaff ? "/admin" : "/portal/dashboard", { replace: true });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, isAuthenticated]);
+
+  // After a fresh login, wait for profile to resolve then redirect by role
+  useEffect(() => {
+    if (loginPending && !authLoading && isAuthenticated) {
+      setLoginPending(false);
+      navigate(isStaff ? "/admin" : from, { replace: true });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loginPending, authLoading, isAuthenticated, isStaff]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSubmitting(true);
     if (mode === "login") {
       const { error } = await signInWithEmail(email, password);
-      if (error) { toast.error(error); setLoading(false); return; }
-      navigate(from, { replace: true });
+      if (error) { toast.error(error); setSubmitting(false); return; }
+      setLoginPending(true);
     } else {
-      if (!fullName.trim()) { toast.error("Full name is required"); setLoading(false); return; }
+      if (!fullName.trim()) { toast.error("Full name is required"); setSubmitting(false); return; }
       const { error } = await signUpWithEmail(email, password, fullName);
-      if (error) { toast.error(error); setLoading(false); return; }
+      if (error) { toast.error(error); setSubmitting(false); return; }
       toast.success("Account created! Check your email to confirm.");
     }
-    setLoading(false);
+    setSubmitting(false);
   };
 
   const handleGoogle = async () => {
@@ -42,7 +66,7 @@ const PortalLogin = () => {
   };
 
   return (
-    <section className="min-h-[80vh] flex items-center justify-center section-padding bg-secondary">
+    <section className="min-h-screen flex items-center justify-center bg-secondary p-4">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -61,6 +85,7 @@ const PortalLogin = () => {
         </div>
 
         <div className="bg-background rounded-2xl p-8 shadow-lg border border-border">
+          {/* Mode toggle */}
           <div className="flex rounded-lg bg-secondary p-1 mb-6">
             {(["login", "signup"] as const).map((m) => (
               <button
@@ -122,8 +147,12 @@ const PortalLogin = () => {
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Please wait…" : mode === "login" ? "Sign In" : "Create Account"}
+            <Button type="submit" className="w-full" disabled={submitting || loginPending}>
+              {submitting || loginPending
+                ? "Please wait…"
+                : mode === "login"
+                  ? "Sign In"
+                  : "Create Account"}
             </Button>
           </form>
 
@@ -137,11 +166,16 @@ const PortalLogin = () => {
           </div>
 
           <Button variant="outline" className="w-full" onClick={handleGoogle}>
-            <Chrome className="w-4 h-4 mr-2" />
-            Google
+            <Chrome className="w-4 h-4 mr-2" /> Google
           </Button>
 
-          <p className="text-center text-sm text-muted-foreground mt-6">
+          <p className="text-center text-xs text-muted-foreground mt-6">
+            Are you staff?{" "}
+            <Link to="/admin/login" className="text-primary font-medium hover:underline">
+              Admin login →
+            </Link>
+          </p>
+          <p className="text-center text-sm text-muted-foreground mt-2">
             Need help?{" "}
             <Link to="/contact" className="text-primary font-medium hover:underline">
               Contact DGEC

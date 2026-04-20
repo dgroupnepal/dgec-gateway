@@ -67,8 +67,8 @@ const PortalProfile = () => {
     .slice(0, 2) ?? "??";
 
   return (
-    <div className="section-padding">
-      <div className="container-custom max-w-3xl space-y-6">
+    <div>
+      <div className="max-w-3xl mx-auto space-y-6">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="font-display text-2xl md:text-3xl font-bold">My Profile</h1>
           <p className="text-muted-foreground mt-1">Keep your information up to date.</p>

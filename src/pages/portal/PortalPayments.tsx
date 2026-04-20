@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CreditCard, CheckCircle2, Clock, AlertCircle, Download } from "lucide-react";
-import { supabase as sb } from "@/integrations/supabase/client";
 
 const statusConfig: Record<PaymentStatus, { label: string; className: string; icon: React.ElementType }> = {
   pending:   { label: "Pending",   className: "bg-yellow-100 text-yellow-800", icon: Clock },
@@ -47,8 +46,8 @@ const PortalPayments = () => {
   };
 
   return (
-    <div className="section-padding">
-      <div className="container-custom max-w-4xl space-y-6">
+    <div>
+      <div className="max-w-4xl mx-auto space-y-6">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
           <h1 className="font-display text-2xl md:text-3xl font-bold">Payments & Invoices</h1>
           <p className="text-muted-foreground mt-1">Track your payment history with DGEC.</p>
