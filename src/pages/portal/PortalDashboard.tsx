@@ -66,8 +66,8 @@ const PortalDashboard = () => {
   ];
 
   return (
-    <div className="space-y-6 section-padding">
-      <div className="container-custom">
+    <div className="space-y-6">
+      <div>
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <div>

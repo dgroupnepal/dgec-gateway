@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -12,24 +12,47 @@ const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { signInWithEmail, isAdmin, isStaff } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const [loginPending, setLoginPending] = useState(false);
+
+  const {
+    signInWithEmail, isAuthenticated, isStaff, loading: authLoading,
+  } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect already-authenticated users immediately
+  useEffect(() => {
+    if (!authLoading && isAuthenticated && !loginPending) {
+      navigate(isStaff ? "/admin" : "/portal/dashboard", { replace: true });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, isAuthenticated]);
+
+  // After fresh login, wait for profile then redirect by role
+  useEffect(() => {
+    if (loginPending && !authLoading && isAuthenticated) {
+      setLoginPending(false);
+      if (isStaff) {
+        navigate("/admin", { replace: true });
+      } else {
+        toast.error("Access denied. This login is for staff only.");
+        navigate("/portal/login", { replace: true });
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loginPending, authLoading, isAuthenticated, isStaff]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSubmitting(true);
     const { error } = await signInWithEmail(email, password);
     if (error) {
       toast.error(error);
-      setLoading(false);
+      setSubmitting(false);
       return;
     }
-    // Small delay for profile to load
-    setTimeout(() => {
-      navigate("/admin", { replace: true });
-    }, 500);
-    setLoading(false);
+    setLoginPending(true);
+    setSubmitting(false);
   };
 
   return (
@@ -81,10 +104,17 @@ const AdminLogin = () => {
                 </button>
               </div>
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing in…" : "Sign In"}
+            <Button type="submit" className="w-full" disabled={submitting || loginPending}>
+              {submitting || loginPending ? "Signing in…" : "Sign In"}
             </Button>
           </form>
+
+          <p className="text-center text-xs text-muted-foreground mt-6">
+            Are you a student?{" "}
+            <Link to="/portal/login" className="text-primary font-medium hover:underline">
+              Student login →
+            </Link>
+          </p>
         </div>
       </motion.div>
     </section>
