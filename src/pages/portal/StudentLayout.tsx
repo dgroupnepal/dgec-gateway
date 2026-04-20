@@ -9,6 +9,7 @@ import {
   LayoutDashboard, User, FileText, MessageSquare,
   CreditCard, Menu, X, LogOut, Bell, GraduationCap,
 } from "lucide-react";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const navItems = [
   { to: "/portal/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -155,6 +156,7 @@ const StudentLayout = () => {
           <Outlet />
         </main>
       </div>
+      <WhatsAppWidget />
     </div>
   );
 };

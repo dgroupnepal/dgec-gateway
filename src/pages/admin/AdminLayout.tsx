@@ -9,6 +9,7 @@ import {
   LayoutDashboard, Users, GitBranch, FileText, MessageSquare,
   CreditCard, Menu, X, LogOut, ChevronDown, Shield, Bell, ClipboardList
 } from "lucide-react";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const navItems = [
   { to: "/admin",            label: "Dashboard",  icon: LayoutDashboard, exact: true },
@@ -135,6 +136,7 @@ const AdminLayout = () => {
           <Outlet />
         </main>
       </div>
+      <WhatsAppWidget />
     </div>
   );
 };
