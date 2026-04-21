@@ -17,7 +17,7 @@ const faqCategories = [
     faqs: [
       { q: "What is DGEC?", a: "D Group Education Consultancy Pvt. Ltd. (DGEC) is a Kathmandu-based education consultancy that helps Nepali students pursue higher education abroad, with a special focus on South Korea. We also provide visa support, documentation, air ticketing, hotel booking, and insurance services." },
       { q: "Where is the DGEC office located?", a: "Our office is located at Kalanki-14, Kathmandu, Nepal — just 60 meters straight from Nepal National Hospital. You can visit us during business hours (Sunday–Friday, 10:00 AM – 5:00 PM)." },
-      { q: "How can I contact DGEC?", a: "You can reach us through multiple channels:\n• Phone (Nepal): +977-01-5927395, +977-015133395, +977-9763228221\n• Phone (Korea): +82-010-7529-2059\n• WhatsApp (Nepal): +977-9868780019\n• WhatsApp (Korea): +82-10-7529-2059\n• Email: info@dgroup.edu.np" },
+      { q: "How can I contact DGEC?", a: "You can reach us through multiple channels:\n• Phone (Nepal): +977-01-5927395, +977-015133395, +977-9763228221\n• Phone (Korea): +82-010-7529-2059\n• WhatsApp (Nepal): +977-9868780019\n• WhatsApp (Korea): +82-10-7529-2059\n• Email: info@dgroupeducation.com" },
       { q: "What are DGEC's business hours?", a: "We are open Sunday through Friday, 10:00 AM to 5:00 PM (Nepal Standard Time). Saturday is closed. For urgent inquiries, you can reach us via WhatsApp anytime." },
     ],
   },
@@ -135,7 +135,7 @@ const FAQ = () => {
                   <div className="flex items-start gap-3">
                     <Mail className="w-4 h-4 text-accent mt-1 shrink-0" />
                     <div className="text-sm">
-                      <p className="text-muted-foreground">info@dgroup.edu.np</p>
+                      <p className="text-muted-foreground">info@dgroupeducation.com</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">

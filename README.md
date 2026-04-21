@@ -3,7 +3,7 @@
 Production-ready SaaS platform for **D Group Education Consultancy Pvt. Ltd. (DGEC)**.  
 Built for students applying to study in Korea, Japan, and other countries from Nepal.
 
-[![Deploy](https://img.shields.io/badge/deploy-Vercel-black?logo=vercel)](https://dgroup.edu.np)
+[![Deploy](https://img.shields.io/badge/deploy-Vercel-black?logo=vercel)](https://dgroupeducation.com)
 [![Worker](https://img.shields.io/badge/API-Cloudflare_Workers-orange?logo=cloudflare)](https://dgec-contact-api.dgroupofficial.workers.dev)
 
 ---
@@ -187,7 +187,7 @@ wrangler deploy cloudflare-worker.ts
 
 ### Custom Domain
 
-In Vercel dashboard → Project → Settings → Domains → Add `dgroup.edu.np`
+In Vercel dashboard → Project → Settings → Domains → Add `dgroupeducation.com`
 
 ---
 

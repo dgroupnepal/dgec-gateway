@@ -361,7 +361,7 @@ const DocumentUpload = () => {
                 </a>
               </Button>
               <Button variant="outline" size="sm" asChild>
-                <a href="mailto:info@dgroup.edu.np">Email Us</a>
+                <a href="mailto:info@dgroupeducation.com">Email Us</a>
               </Button>
             </div>
           </div>

@@ -18,7 +18,7 @@ const Disclaimer = () => (
     <section className="section-padding">
       <div className="container-custom max-w-3xl prose prose-neutral">
         <h2 className="font-display font-bold text-xl mb-3">General Information</h2>
-        <p className="text-muted-foreground mb-6">The information provided on this website (dgroup.edu.np) by D Group Education Consultancy Pvt. Ltd. (DGEC) is for general informational purposes only. All information on the site is provided in good faith; however, we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the site.</p>
+        <p className="text-muted-foreground mb-6">The information provided on this website (dgroupeducation.com) by D Group Education Consultancy Pvt. Ltd. (DGEC) is for general informational purposes only. All information on the site is provided in good faith; however, we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information on the site.</p>
 
         <h2 className="font-display font-bold text-xl mb-3">Professional Disclaimer</h2>
         <p className="text-muted-foreground mb-6">DGEC provides education counseling, visa support guidance, and travel services. We are not a law firm and do not provide legal advice. Visa decisions are made solely by the respective embassies and immigration authorities. While we strive to provide accurate and up-to-date information, visa requirements and immigration policies may change without notice. We recommend verifying all information with the relevant embassy or official sources.</p>
@@ -36,7 +36,7 @@ const Disclaimer = () => (
         <p className="text-muted-foreground mb-6">This website may contain copyrighted material, the use of which has not always been specifically authorized by the copyright owner. Such material is made available for educational and informational purposes only. We believe this constitutes "fair use" of any such copyrighted material.</p>
 
         <h2 className="font-display font-bold text-xl mb-3">Contact</h2>
-        <p className="text-muted-foreground">If you have any questions about this Disclaimer, please contact us at:<br />Email: info@dgroup.edu.np<br />Phone: +977-01-5927395<br />Address: Kalanki-14, Kathmandu, Nepal</p>
+        <p className="text-muted-foreground">If you have any questions about this Disclaimer, please contact us at:<br />Email: info@dgroupeducation.com<br />Phone: +977-01-5927395<br />Address: Kalanki-14, Kathmandu, Nepal</p>
       </div>
     </section>
   </>

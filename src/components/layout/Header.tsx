@@ -45,7 +45,7 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <a href="tel:+977015927395" className="hover:text-accent transition-colors">+977-01-5927395</a>
             <span className="text-primary-foreground/30">|</span>
-            <a href="mailto:info@dgroup.edu.np" className="hover:text-accent transition-colors">info@dgroup.edu.np</a>
+            <a href="mailto:info@dgroupeducation.com" className="hover:text-accent transition-colors">info@dgroupeducation.com</a>
           </div>
           <SocialIcons variant="light" size="sm" />
         </div>

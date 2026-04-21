@@ -187,7 +187,7 @@ DGEC has partnerships and working relationships with multiple Korean universitie
 - Scholarship applications
 - Visa processing support
 
-**Contact DGEC** for personalized university recommendations: info@dgroup.edu.np or WhatsApp +977-9868780019.
+**Contact DGEC** for personalized university recommendations: info@dgroupeducation.com or WhatsApp +977-9868780019.
     `,
   },
   {
@@ -276,7 +276,7 @@ Before departure, ensure you have:
 
 DGEC provides transparent cost guidance and helps you plan your finances. We also assist with scholarship applications to minimize your expenses.
 
-**Get a personalized cost estimate:** Contact DGEC at +977-01-5927395 or email info@dgroup.edu.np.
+**Get a personalized cost estimate:** Contact DGEC at +977-01-5927395 or email info@dgroupeducation.com.
     `,
   },
   {
@@ -555,7 +555,7 @@ Our counselors help you choose courses aligned with your career goals and job ma
 - Scholarship opportunity identification
 - Post-graduation career planning guidance
 
-**Plan your career in Korea:** Contact DGEC at info@dgroup.edu.np or WhatsApp +977-9868780019.
+**Plan your career in Korea:** Contact DGEC at info@dgroupeducation.com or WhatsApp +977-9868780019.
     `,
   },
   {
@@ -882,7 +882,7 @@ Join hundreds of students who have successfully achieved their study abroad drea
 - Visit: Kalanki-14, Kathmandu (near Nepal National Hospital)
 - Call: +977-01-5927395
 - WhatsApp: +977-9868780019
-- Email: info@dgroup.edu.np
+- Email: info@dgroupeducation.com
     `,
   },
   {
@@ -1015,7 +1015,7 @@ We help make your first trip abroad as smooth as possible:
 - Travel insurance arrangement
 
 **Planning your first trip abroad?** Let DGEC guide you.
-Call: +977-01-5927395 | WhatsApp: +977-9868780019 | Email: info@dgroup.edu.np
+Call: +977-01-5927395 | WhatsApp: +977-9868780019 | Email: info@dgroupeducation.com
     `,
   },
 ];

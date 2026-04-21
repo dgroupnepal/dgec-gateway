@@ -72,7 +72,7 @@ const Index = () => {
         <script type="application/ld+json">{JSON.stringify({
           "@context":"https://schema.org","@type":"EducationalOrganization",
           "name":"D Group Education Consultancy Pvt. Ltd.","alternateName":"DGEC",
-          "url":"https://dgroupeducation.com","email":"info@dgroup.edu.np",
+          "url":"https://dgroupeducation.com","email":"info@dgroupeducation.com",
           "telephone":"+977-015927395",
           "address":{"@type":"PostalAddress","streetAddress":"Kalanki-14, 60m from Nepal National Hospital","addressLocality":"Kathmandu","addressCountry":"NP"},
           "sameAs":["https://wa.me/9779868780019"]

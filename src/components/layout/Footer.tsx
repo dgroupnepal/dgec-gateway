@@ -71,7 +71,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 shrink-0 text-accent" />
-                <a href="mailto:info@dgroup.edu.np" className="hover:text-accent transition-colors">info@dgroup.edu.np</a>
+                <a href="mailto:info@dgroupeducation.com" className="hover:text-accent transition-colors">info@dgroupeducation.com</a>
               </li>
             </ul>
             <div className="mt-4 text-sm text-primary-foreground/70">

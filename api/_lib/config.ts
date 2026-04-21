@@ -1,4 +1,4 @@
-const required = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "ADMIN_EMAIL", "EMAIL_FROM"] as const;
+const required = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "ADMIN_EMAIL", "MAIL_FROM"] as const;
 
 for (const key of required) {
   if (!process.env[key]) {
@@ -10,9 +10,9 @@ export const config = {
   supabaseUrl: process.env.SUPABASE_URL || "",
   supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || "",
   storageBucket: process.env.STORAGE_BUCKET || "dgec-documents",
-  adminEmail: process.env.ADMIN_EMAIL || "info@dgroup.edu.np",
+  adminEmail: process.env.ADMIN_EMAIL || "info@dgroupeducation.com",
   founderEmail: process.env.FOUNDER_EMAIL,
-  emailFrom: process.env.EMAIL_FROM || "DGEC <no-reply@dgroup.edu.np>",
+  emailFrom: process.env.MAIL_FROM || process.env.EMAIL_FROM || "DGEC <noreply@dgroupeducation.com>",
   resendApiKey: process.env.RESEND_API_KEY,
   adminApiToken: process.env.ADMIN_API_TOKEN || "",
   allowedOrigins: (process.env.ALLOWED_ORIGINS || "").split(",").map((item) => item.trim()).filter(Boolean),

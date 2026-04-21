@@ -4,10 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Payment, PaymentStatus } from "@/integrations/supabase/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CreditCard, CheckCircle2, Clock, AlertCircle, Download } from "lucide-react";
-import { supabase as sb } from "@/integrations/supabase/client";
 
 const statusConfig: Record<PaymentStatus, { label: string; className: string; icon: React.ElementType }> = {
   pending:   { label: "Pending",   className: "bg-yellow-100 text-yellow-800", icon: Clock },
@@ -143,7 +141,7 @@ const PortalPayments = () => {
             <p>Bank Transfer · eSewa · Khalti · Cash (DGEC Office)</p>
             <p className="mt-2 text-xs text-blue-600">
               After payment, send the receipt to{" "}
-              <a href="mailto:info@dgroup.edu.np" className="underline">info@dgroup.edu.np</a> or
+              <a href="mailto:info@dgroupeducation.com" className="underline">info@dgroupeducation.com</a> or
               WhatsApp us. Your receipt will be updated within 24 hours.
             </p>
           </CardContent>

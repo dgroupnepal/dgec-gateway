@@ -34,7 +34,7 @@ const TermsConditions = () => (
         <p className="text-muted-foreground mb-6">DGEC reserves the right to update these Terms & Conditions at any time. Continued use of our services after changes constitutes acceptance of the updated terms.</p>
 
         <h2 className="font-display font-bold text-xl mb-3">8. Contact</h2>
-        <p className="text-muted-foreground">For questions about these terms, contact us at:<br />Email: info@dgroup.edu.np<br />Phone: +977-015927395<br />Address: Kalanki-14, Kathmandu, Nepal</p>
+        <p className="text-muted-foreground">For questions about these terms, contact us at:<br />Email: info@dgroupeducation.com<br />Phone: +977-015927395<br />Address: Kalanki-14, Kathmandu, Nepal</p>
       </div>
     </section>
   </>

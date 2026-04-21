@@ -257,7 +257,7 @@ const Blog = () => {
                 <h3 className="font-display font-bold text-base mb-4">Contact DGEC</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center gap-2 text-muted-foreground"><Phone className="w-4 h-4 text-accent" /> +977-01-5927395</div>
-                  <div className="flex items-center gap-2 text-muted-foreground"><Mail className="w-4 h-4 text-accent" /> info@dgroup.edu.np</div>
+                  <div className="flex items-center gap-2 text-muted-foreground"><Mail className="w-4 h-4 text-accent" /> info@dgroupeducation.com</div>
                   <div className="flex items-center gap-2 text-muted-foreground"><MessageCircle className="w-4 h-4 text-accent" /> +977-9868780019</div>
                 </div>
               </div>

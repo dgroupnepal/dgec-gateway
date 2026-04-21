@@ -25,13 +25,13 @@ const PrivacyPolicy = () => (
         <p className="text-muted-foreground mb-6">We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. Documents uploaded to our system are stored securely and accessible only by authorized team members.</p>
 
         <h2 className="font-display font-bold text-xl mb-3">5. Your Rights</h2>
-        <p className="text-muted-foreground mb-6">You have the right to access, correct, or request deletion of your personal data. To exercise these rights, please contact us at info@dgroup.edu.np.</p>
+        <p className="text-muted-foreground mb-6">You have the right to access, correct, or request deletion of your personal data. To exercise these rights, please contact us at info@dgroupeducation.com.</p>
 
         <h2 className="font-display font-bold text-xl mb-3">6. Cookies</h2>
         <p className="text-muted-foreground mb-6">Our website may use cookies to improve your browsing experience. You can control cookie preferences through your browser settings.</p>
 
         <h2 className="font-display font-bold text-xl mb-3">7. Contact Us</h2>
-        <p className="text-muted-foreground">If you have questions about this Privacy Policy, contact us at:<br />Email: info@dgroup.edu.np<br />Phone: +977-015927395<br />Address: Kalanki-14, Kathmandu, Nepal</p>
+        <p className="text-muted-foreground">If you have questions about this Privacy Policy, contact us at:<br />Email: info@dgroupeducation.com<br />Phone: +977-015927395<br />Address: Kalanki-14, Kathmandu, Nepal</p>
       </div>
     </section>
   </>

@@ -123,7 +123,7 @@ const BlogPost = () => {
                     <Phone className="w-4 h-4 text-accent" /> +977-01-5927395
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <Mail className="w-4 h-4 text-accent" /> info@dgroup.edu.np
+                    <Mail className="w-4 h-4 text-accent" /> info@dgroupeducation.com
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <MessageCircle className="w-4 h-4 text-accent" /> +977-9868780019

@@ -1,0 +1,22 @@
+name = "dgec-contact-api"
+main = "cloudflare-worker.ts"
+compatibility_date = "2025-01-01"
+account_id = "cfb02bd4d853223a8f25cfdc64f9ca6f"
+
+# R2 — document uploads
+[[r2_buckets]]
+binding = "DOCUMENTS_BUCKET"
+bucket_name = "dgec-documents"
+
+# D1 — inquiries + admin uploads
+[[d1_databases]]
+binding = "DGEC_DB"
+database_name = "dgec"
+database_id = "762f3359-f304-4ce0-83d6-854409a30e47"
+
+# Non-secret defaults. Override secrets via `wrangler secret put` or CI env.
+[vars]
+MAIL_FROM = "DGEC <noreply@dgroupeducation.com>"
+ADMIN_EMAIL = "info@dgroupeducation.com"
+SITE_URL = "https://dgroupeducation.com"
+ALLOWED_ORIGINS = "https://dgroupeducation.com,https://www.dgroupeducation.com"

@@ -21,7 +21,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email",
-    lines: ["info@dgroup.edu.np"],
+    lines: ["info@dgroupeducation.com"],
   },
   {
     icon: Clock,
