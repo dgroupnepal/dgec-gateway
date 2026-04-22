@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
+import { api } from "@/lib/api";
+import TurnstileWidget from "@/components/TurnstileWidget";
 
 const contactInfo = [
   {
@@ -16,7 +18,7 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Phone Numbers",
-    lines: ["+977-1-5927395",  "+82-010-7529-2059 (Korea)"],
+    lines: ["+977-1-5927395", "+82-010-7529-2059 (Korea)"],
   },
   {
     icon: Mail,
@@ -30,62 +32,48 @@ const contactInfo = [
   },
 ];
 
+const EMPTY_FORM = {
+  fullName: "",
+  phone: "",
+  email: "",
+  subject: "",
+  message: "",
+  website: "",
+};
+
 const Contact = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [form, setForm] = useState({
-    fullName: "",
-    phone: "",
-    email: "",
-    subject: "",
-    message: "",
-    website: "",
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
+    if (siteKey && !turnstileToken) {
+      toast.error("Please complete the security check.");
+      return;
+    }
+
     setIsLoading(true);
-
     try {
-      const formData = new FormData();
-      formData.append("fullName", form.fullName);
-      formData.append("phone", form.phone);
-      formData.append("email", form.email);
-      formData.append("subject", form.subject);
-      formData.append("message", form.message);
-      formData.append("website", form.website);
-
-      const response = await fetch(
-        "https://dgec-contact-api.dgroupofficial.workers.dev/contact",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      let result: { success?: boolean; message?: string } | null = null;
-
-      try {
-        result = await response.json();
-      } catch {
-        throw new Error("Server returned invalid response");
-      }
-
-      if (!response.ok || !result?.success) {
-        throw new Error(result?.message || "Unable to send message right now.");
-      }
-
-      toast.success(result.message || "Message sent successfully.");
-      setForm({
-        fullName: "",
-        phone: "",
-        email: "",
-        subject: "",
-        message: "",
-        website: "",
+      const result = await api.postContact({
+        fullName: form.fullName,
+        phone: form.phone,
+        email: form.email,
+        subject: form.subject,
+        message: form.message,
+        website: form.website,
+        turnstileToken,
       });
-    } catch (error: unknown) {
-      const msg = error instanceof Error ? error.message : "Network error while sending message.";
-      toast.error(msg);
+
+      if (!result.success) throw new Error(result.message || "Unable to send message right now.");
+
+      toast.success(result.message || "Message sent! We'll be in touch shortly.");
+      setForm(EMPTY_FORM);
+      setTurnstileToken("");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Network error. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -123,6 +111,7 @@ const Contact = () => {
               </h2>
 
               <form id="contact-form" onSubmit={handleSubmit} className="space-y-5">
+                {/* Honeypot — must stay hidden, bots fill this */}
                 <input
                   type="text"
                   name="website"
@@ -130,9 +119,7 @@ const Contact = () => {
                   tabIndex={-1}
                   autoComplete="off"
                   value={form.website}
-                  onChange={(event) =>
-                    setForm((prev) => ({ ...prev, website: event.target.value }))
-                  }
+                  onChange={(e) => setForm((p) => ({ ...p, website: e.target.value }))}
                 />
 
                 <div className="grid md:grid-cols-2 gap-4">
@@ -146,9 +133,7 @@ const Contact = () => {
                       maxLength={100}
                       className="mt-1"
                       value={form.fullName}
-                      onChange={(e) =>
-                        setForm((prev) => ({ ...prev, fullName: e.target.value }))
-                      }
+                      onChange={(e) => setForm((p) => ({ ...p, fullName: e.target.value }))}
                     />
                   </div>
 
@@ -163,9 +148,7 @@ const Contact = () => {
                       maxLength={20}
                       className="mt-1"
                       value={form.phone}
-                      onChange={(e) =>
-                        setForm((prev) => ({ ...prev, phone: e.target.value }))
-                      }
+                      onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
                     />
                   </div>
                 </div>
@@ -181,9 +164,7 @@ const Contact = () => {
                     maxLength={100}
                     className="mt-1"
                     value={form.email}
-                    onChange={(e) =>
-                      setForm((prev) => ({ ...prev, email: e.target.value }))
-                    }
+                    onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                   />
                 </div>
 
@@ -196,9 +177,7 @@ const Contact = () => {
                     maxLength={200}
                     className="mt-1"
                     value={form.subject}
-                    onChange={(e) =>
-                      setForm((prev) => ({ ...prev, subject: e.target.value }))
-                    }
+                    onChange={(e) => setForm((p) => ({ ...p, subject: e.target.value }))}
                   />
                 </div>
 
@@ -213,11 +192,11 @@ const Contact = () => {
                     rows={5}
                     className="mt-1"
                     value={form.message}
-                    onChange={(e) =>
-                      setForm((prev) => ({ ...prev, message: e.target.value }))
-                    }
+                    onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
                   />
                 </div>
+
+                <TurnstileWidget onVerify={setTurnstileToken} />
 
                 <Button
                   variant="accent"
@@ -254,20 +233,12 @@ const Contact = () => {
                 </h3>
                 <div className="space-y-2">
                   <Button variant="whatsapp" size="sm" className="w-full" asChild>
-                    <a
-                      href="https://wa.me/9779868780019"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href="https://wa.me/9779868780019" target="_blank" rel="noopener noreferrer">
                       Nepal: +977 9868780019
                     </a>
                   </Button>
                   <Button variant="whatsapp" size="sm" className="w-full" asChild>
-                    <a
-                      href="https://wa.me/821075292059"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href="https://wa.me/821075292059" target="_blank" rel="noopener noreferrer">
                       Korea: +82 10-7529-2059
                     </a>
                   </Button>
@@ -294,7 +265,9 @@ const Contact = () => {
                 <MapPin className="w-5 h-5 text-accent shrink-0 mt-0.5" />
                 <div>
                   <p className="font-display font-semibold">DGEC Office</p>
-                  <p className="text-muted-foreground text-sm">Kalanki-14, Kathmandu, Nepal — 60m from Nepal National Hospital</p>
+                  <p className="text-muted-foreground text-sm">
+                    Kalanki-14, Kathmandu, Nepal — 60m from Nepal National Hospital
+                  </p>
                 </div>
               </div>
             </div>

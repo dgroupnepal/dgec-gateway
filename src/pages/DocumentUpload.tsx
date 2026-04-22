@@ -7,84 +7,71 @@ import { Label } from "@/components/ui/label";
 import SectionHeader from "@/components/SectionHeader";
 import { Upload, Shield, FileText, Phone, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
-
-const DOCUMENT_UPLOAD_ENDPOINT =
-  "https://dgec-contact-api.dgroupofficial.workers.dev/document-upload";
+import { api } from "@/lib/api";
+import TurnstileWidget from "@/components/TurnstileWidget";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ACCEPTED_TYPES = [".pdf", ".jpg", ".jpeg", ".png", ".doc", ".docx", ".zip"];
 
+const EMPTY_FORM = {
+  fullName: "",
+  phone: "",
+  email: "",
+  passportNumber: "",
+  message: "",
+  website: "",
+};
+
 const DocumentUpload = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [form, setForm] = useState({
-    fullName: "",
-    phone: "",
-    email: "",
-    passportNumber: "",
-    message: "",
-    website: "",
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-
-    const newFiles = Array.from(e.target.files);
-    const validFiles = newFiles.filter((f) => {
-      if (f.size > MAX_FILE_SIZE) {
-        toast.error(`${f.name} exceeds 10MB limit`);
-        return false;
-      }
+    const newFiles = Array.from(e.target.files).filter((f) => {
+      if (f.size > MAX_FILE_SIZE) { toast.error(`${f.name} exceeds 10MB limit`); return false; }
       return true;
     });
-
-    setFiles((prev) => [...prev, ...validFiles]);
-
+    setFiles((prev) => [...prev, ...newFiles]);
     e.target.value = "";
   };
 
-  const removeFile = (index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
-  };
+  const removeFile = (index: number) => setFiles((prev) => prev.filter((_, i) => i !== index));
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
+  const handleDragOver = (e: React.DragEvent) => { e.preventDefault(); e.stopPropagation(); };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
     if (!e.dataTransfer.files) return;
-
-    const newFiles = Array.from(e.dataTransfer.files);
-    const validFiles = newFiles.filter((f) => {
-      if (f.size > MAX_FILE_SIZE) {
-        toast.error(`${f.name} exceeds 10MB limit`);
-        return false;
-      }
+    const newFiles = Array.from(e.dataTransfer.files).filter((f) => {
+      if (f.size > MAX_FILE_SIZE) { toast.error(`${f.name} exceeds 10MB limit`); return false; }
       return true;
     });
-
-    setFiles((prev) => [...prev, ...validFiles]);
+    setFiles((prev) => [...prev, ...newFiles]);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!form.fullName.trim() || !form.phone.trim() || !form.email.trim()) {
-      toast.error("Full name, phone, and email are required");
+      toast.error("Full name, phone, and email are required.");
       return;
     }
-
     if (files.length === 0) {
       toast.error("Please upload at least one document.");
       return;
     }
 
-    setIsLoading(true);
+    const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
+    if (siteKey && !turnstileToken) {
+      toast.error("Please complete the security check.");
+      return;
+    }
 
+    setIsLoading(true);
     try {
       const payload = new FormData();
       payload.append("fullName", form.fullName.trim());
@@ -93,39 +80,19 @@ const DocumentUpload = () => {
       payload.append("passportNumber", form.passportNumber.trim());
       payload.append("message", form.message.trim());
       payload.append("website", form.website.trim());
-
-      // Current worker supports one file at a time
+      payload.append("turnstileToken", turnstileToken);
       payload.append("file", files[0]);
 
-      const response = await fetch(DOCUMENT_UPLOAD_ENDPOINT, {
-        method: "POST",
-        body: payload,
-      });
+      const result = await api.postDocumentUpload(payload);
 
-      let result: { success?: boolean; message?: string } = {};
-      try {
-        result = await response.json();
-      } catch {
-        result = {};
-      }
-
-      if (!response.ok || result.success !== true) {
-        throw new Error(result.message || "Unable to upload documents right now.");
-      }
+      if (!result.success) throw new Error(result.message || "Unable to upload documents right now.");
 
       toast.success(result.message || "Documents submitted successfully.");
       setFiles([]);
-      setForm({
-        fullName: "",
-        phone: "",
-        email: "",
-        passportNumber: "",
-        message: "",
-        website: "",
-      });
-    } catch (error: unknown) {
-      const msg = error instanceof Error ? error.message : "Network error while uploading documents.";
-      toast.error(msg);
+      setForm(EMPTY_FORM);
+      setTurnstileToken("");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Network error while uploading documents.");
     } finally {
       setIsLoading(false);
     }
@@ -135,11 +102,7 @@ const DocumentUpload = () => {
     <>
       <section className="bg-primary section-padding">
         <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-3xl"
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">
             <span className="inline-block px-4 py-1.5 rounded-full bg-accent/20 text-accent font-medium text-sm mb-4">
               Document Submission
             </span>
@@ -187,6 +150,7 @@ const DocumentUpload = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Honeypot — must stay hidden, bots fill this */}
             <input
               type="text"
               name="website"
@@ -194,7 +158,7 @@ const DocumentUpload = () => {
               tabIndex={-1}
               autoComplete="off"
               value={form.website}
-              onChange={(e) => setForm((prev) => ({ ...prev, website: e.target.value }))}
+              onChange={(e) => setForm((p) => ({ ...p, website: e.target.value }))}
             />
 
             <div className="grid md:grid-cols-2 gap-4">
@@ -202,28 +166,25 @@ const DocumentUpload = () => {
                 <Label htmlFor="fullName">Full Name *</Label>
                 <Input
                   id="fullName"
-                  name="fullName"
                   placeholder="Your full name"
                   required
                   maxLength={100}
                   className="mt-1"
                   value={form.fullName}
-                  onChange={(e) => setForm((prev) => ({ ...prev, fullName: e.target.value }))}
+                  onChange={(e) => setForm((p) => ({ ...p, fullName: e.target.value }))}
                 />
               </div>
-
               <div>
                 <Label htmlFor="phone">Phone Number *</Label>
                 <Input
                   id="phone"
-                  name="phone"
                   type="tel"
                   placeholder="+977 98XXXXXXXX"
                   required
                   maxLength={20}
                   className="mt-1"
                   value={form.phone}
-                  onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))}
+                  onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
                 />
               </div>
             </div>
@@ -232,14 +193,13 @@ const DocumentUpload = () => {
               <Label htmlFor="email">Email Address *</Label>
               <Input
                 id="email"
-                name="email"
                 type="email"
                 placeholder="your@email.com"
                 required
                 maxLength={100}
                 className="mt-1"
                 value={form.email}
-                onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
+                onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
               />
             </div>
 
@@ -247,14 +207,11 @@ const DocumentUpload = () => {
               <Label htmlFor="passportNumber">Passport Number (Optional)</Label>
               <Input
                 id="passportNumber"
-                name="passportNumber"
                 placeholder="Passport number"
-                className="mt-1"
                 maxLength={50}
+                className="mt-1"
                 value={form.passportNumber}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, passportNumber: e.target.value }))
-                }
+                onChange={(e) => setForm((p) => ({ ...p, passportNumber: e.target.value }))}
               />
             </div>
 
@@ -262,13 +219,12 @@ const DocumentUpload = () => {
               <Label htmlFor="message">Message / Remarks</Label>
               <Textarea
                 id="message"
-                name="message"
                 placeholder="Tell us about your requirements..."
                 maxLength={1000}
                 className="mt-1"
                 rows={4}
                 value={form.message}
-                onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))}
+                onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
               />
             </div>
 
@@ -290,7 +246,6 @@ const DocumentUpload = () => {
                 <input
                   type="file"
                   id="fileUpload"
-                  name="file"
                   multiple
                   accept={ACCEPTED_TYPES.join(",")}
                   onChange={handleFileChange}
@@ -300,10 +255,7 @@ const DocumentUpload = () => {
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    document.getElementById("fileUpload")?.click();
-                  }}
+                  onClick={(e) => { e.stopPropagation(); document.getElementById("fileUpload")?.click(); }}
                 >
                   Choose Files
                 </Button>
@@ -312,22 +264,13 @@ const DocumentUpload = () => {
               {files.length > 0 && (
                 <div className="mt-4 space-y-2">
                   {files.map((f, i) => (
-                    <div
-                      key={`${f.name}-${i}`}
-                      className="flex items-center justify-between bg-card rounded-lg p-3 shadow-card"
-                    >
+                    <div key={`${f.name}-${i}`} className="flex items-center justify-between bg-card rounded-lg p-3 shadow-card">
                       <div className="flex items-center gap-2">
                         <FileText className="w-4 h-4 text-accent" />
                         <span className="text-sm truncate max-w-[200px]">{f.name}</span>
-                        <span className="text-xs text-muted-foreground">
-                          ({(f.size / 1024).toFixed(0)} KB)
-                        </span>
+                        <span className="text-xs text-muted-foreground">({(f.size / 1024).toFixed(0)} KB)</span>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => removeFile(i)}
-                        className="text-destructive text-xs hover:underline"
-                      >
+                      <button type="button" onClick={() => removeFile(i)} className="text-destructive text-xs hover:underline">
                         Remove
                       </button>
                     </div>
@@ -342,6 +285,8 @@ const DocumentUpload = () => {
                 Your documents are handled securely and reviewed only by our authorized team members.
               </p>
             </div>
+
+            <TurnstileWidget onVerify={setTurnstileToken} />
 
             <Button variant="accent" size="lg" type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? "Uploading..." : "Submit Documents"}

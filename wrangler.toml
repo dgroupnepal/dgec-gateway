@@ -20,3 +20,10 @@ MAIL_FROM = "DGEC <noreply@dgroupeducation.com>"
 ADMIN_EMAIL = "info@dgroupeducation.com"
 SITE_URL = "https://dgroupeducation.com"
 ALLOWED_ORIGINS = "https://dgroupeducation.com,https://www.dgroupeducation.com"
+
+# Secrets — set these via `wrangler secret put <KEY>`, never commit real values:
+#   wrangler secret put RESEND_API_KEY
+#   wrangler secret put ADMIN_API_TOKEN
+#   wrangler secret put TURNSTILE_SECRET_KEY   ← Cloudflare Turnstile secret
+#   wrangler secret put FOUNDER_EMAIL
+#   wrangler secret put SUPABASE_SERVICE_ROLE_KEY
