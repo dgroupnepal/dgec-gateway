@@ -8,6 +8,7 @@ import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import TurnstileWidget from "@/components/TurnstileWidget";
+import { useSuccessPopup } from "@/hooks/useSuccessPopup";
 
 const contactInfo = [
   {
@@ -45,6 +46,10 @@ const Contact = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [turnstileToken, setTurnstileToken] = useState("");
+  const { showPopup, popup } = useSuccessPopup(() => {
+    setForm(EMPTY_FORM);
+    setTurnstileToken("");
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,9 +74,7 @@ const Contact = () => {
 
       if (!result.success) throw new Error(result.message || "Unable to send message right now.");
 
-      toast.success(result.message || "Message sent! We'll be in touch shortly.");
-      setForm(EMPTY_FORM);
-      setTurnstileToken("");
+      showPopup({ name: form.fullName, email: form.email });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Network error. Please try again.");
     } finally {
@@ -274,6 +277,8 @@ const Contact = () => {
           </div>
         </div>
       </section>
+
+      {popup}
     </>
   );
 };

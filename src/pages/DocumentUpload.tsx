@@ -9,6 +9,7 @@ import { Upload, Shield, FileText, Phone, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import TurnstileWidget from "@/components/TurnstileWidget";
+import { useSuccessPopup } from "@/hooks/useSuccessPopup";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ACCEPTED_TYPES = [".pdf", ".jpg", ".jpeg", ".png", ".doc", ".docx", ".zip"];
@@ -27,6 +28,11 @@ const DocumentUpload = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [turnstileToken, setTurnstileToken] = useState("");
+  const { showPopup, popup } = useSuccessPopup(() => {
+    setForm(EMPTY_FORM);
+    setFiles([]);
+    setTurnstileToken("");
+  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -87,10 +93,7 @@ const DocumentUpload = () => {
 
       if (!result.success) throw new Error(result.message || "Unable to upload documents right now.");
 
-      toast.success(result.message || "Documents submitted successfully.");
-      setFiles([]);
-      setForm(EMPTY_FORM);
-      setTurnstileToken("");
+      showPopup({ name: form.fullName, email: form.email });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Network error while uploading documents.");
     } finally {
@@ -312,6 +315,8 @@ const DocumentUpload = () => {
           </div>
         </div>
       </section>
+
+      {popup}
     </>
   );
 };

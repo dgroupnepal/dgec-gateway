@@ -8,6 +8,7 @@ import SectionHeader from "@/components/SectionHeader";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
 import TurnstileWidget from "@/components/TurnstileWidget";
+import { useSuccessPopup } from "@/hooks/useSuccessPopup";
 
 const EMPTY_FORM = {
   fullName: "",
@@ -26,6 +27,10 @@ const StudentInquiry = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [turnstileToken, setTurnstileToken] = useState("");
+  const { showPopup, popup } = useSuccessPopup(() => {
+    setForm(EMPTY_FORM);
+    setTurnstileToken("");
+  });
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -40,9 +45,7 @@ const StudentInquiry = () => {
     try {
       const result = await api.postStudentInquiry({ ...form, turnstileToken });
       if (result.success) {
-        toast.success(result.message || "Inquiry submitted successfully.");
-        setForm(EMPTY_FORM);
-        setTurnstileToken("");
+        showPopup({ name: form.fullName, email: form.email });
       } else {
         toast.error(result.message || "Unable to submit inquiry.");
       }
@@ -151,6 +154,8 @@ const StudentInquiry = () => {
           </form>
         </div>
       </section>
+
+      {popup}
     </>
   );
 };
