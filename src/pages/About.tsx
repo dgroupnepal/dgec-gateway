@@ -28,6 +28,13 @@ const team = [
     description: "Handles documentation, coordination, and daily operations.",
     whatsapp: "https://wa.me/9779868780019",
   },
+  {
+    name: "Sirjana Rana",
+    role: "Account / Billing / Administration",
+    image: "",
+    description: "Manages accounts, billing, and administrative operations at DGEC.",
+    whatsapp: "https://wa.me/9779868780019",
+  },
 ];
 
 const milestones = [
@@ -127,37 +134,46 @@ const About = () => {
       <section className="section-padding bg-secondary">
         <div className="container-custom">
           <SectionHeader badge="Our Team" title="Meet the DGEC Team" description="Dedicated professionals committed to your success abroad." />
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            {team.map((member, i) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-background rounded-xl p-6 shadow-card text-center group"
-              >
-                <div className="relative w-32 h-32 mx-auto mb-4">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-32 h-32 rounded-full object-cover shadow-elevated transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <a
-                    href={member.whatsapp}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="absolute -bottom-1 -right-1 w-9 h-9 rounded-full bg-success flex items-center justify-center text-success-foreground shadow-md hover:scale-110 transition-transform"
-                    aria-label={`WhatsApp ${member.name}`}
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                  </a>
-                </div>
-                <h3 className="font-display font-semibold text-base">{member.name}</h3>
-                <p className="text-accent text-sm font-medium mb-2">{member.role}</p>
-                <p className="text-muted-foreground text-sm">{member.description}</p>
-              </motion.div>
-            ))}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
+            {team.map((member, i) => {
+              const initials = member.name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+              return (
+                <motion.div
+                  key={member.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-background rounded-xl p-6 shadow-card text-center group"
+                >
+                  <div className="relative w-32 h-32 mx-auto mb-4">
+                    {member.image ? (
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-32 h-32 rounded-full object-cover shadow-elevated transition-transform duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-elevated transition-transform duration-300 group-hover:scale-105">
+                        <span className="text-3xl font-display font-bold text-white">{initials}</span>
+                      </div>
+                    )}
+                    <a
+                      href={member.whatsapp}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute -bottom-1 -right-1 w-9 h-9 rounded-full bg-success flex items-center justify-center text-success-foreground shadow-md hover:scale-110 transition-transform"
+                      aria-label={`WhatsApp ${member.name}`}
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                    </a>
+                  </div>
+                  <h3 className="font-display font-semibold text-base">{member.name}</h3>
+                  <p className="text-accent text-sm font-medium mb-2">{member.role}</p>
+                  <p className="text-muted-foreground text-sm">{member.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
